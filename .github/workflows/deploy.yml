@@ -28,13 +28,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Verify links, anchors, and shared markup
+      # check.py verifies sitemap coverage itself. It is deliberately not
+      # regenerated here: write_sitemap() stamps today's date into <lastmod>,
+      # so a diff-based staleness check would fail on every later push.
+      - name: Verify links, anchors, shared markup, and sitemap coverage
         run: python check.py
-      - name: Fail if sitemap.xml is stale
-        run: |
-          python check.py --write-sitemap
-          git diff --exit-code -- sitemap.xml \
-            || (echo "::error::sitemap.xml is out of date. Run: python check.py --write-sitemap" && exit 1)
 
   deploy:
     needs: check

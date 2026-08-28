@@ -169,12 +169,14 @@ def main():
     # --- 5. Every page appears in sitemap.xml -------------------------------
     if os.path.exists("sitemap.xml"):
         sitemap = read("sitemap.xml")
-        for page in INDEXABLE:
-            if f"{SITE}{slug(page)}<" not in sitemap:
-                problems.append(
-                    f"sitemap.xml: missing entry for {page}"
-                    " (run: python check.py --write-sitemap)"
-                )
+        listed = set(re.findall(r"<loc>([^<]+)</loc>", sitemap))
+        expected = {f"{SITE}{slug(page)}" for page in INDEXABLE}
+        for missing in sorted(expected - listed):
+            problems.append(f"sitemap.xml: missing entry for {missing}")
+        for extra in sorted(listed - expected):
+            problems.append(f"sitemap.xml: lists a page that no longer exists: {extra}")
+        if listed != expected:
+            problems.append("fix both with: python check.py --write-sitemap")
 
     # --- 6. No CSS custom property used without being defined ---------------
     css_path = "assets/css/style.css"
