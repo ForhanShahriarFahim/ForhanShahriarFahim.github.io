@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Machine Learning Pipeline, and Where It Usually Breaks</title>
+<meta name="description" content="An end-to-end walk through the stages of a machine learning project, and the mistake most often made at each one — from problem framing and data splitting to evaluation and interpretation.">
+<meta name="author" content="Md. Forhan Shahriar Fahim">
+<link rel="canonical" href="https://forhanshahriarfahim.github.io/notes/ml-pipeline-common-mistakes.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Machine Learning Pipeline, and Where It Usually Breaks">
+<meta property="og:description" content="Most failed machine learning projects do not fail at the model. They fail in the plumbing around it.">
+<meta property="og:url" content="https://forhanshahriarfahim.github.io/notes/ml-pipeline-common-mistakes.html">
+<meta property="og:image" content="https://forhanshahriarfahim.github.io/assets/img/profile.jpg">
+<meta name="twitter:card" content="summary">
+
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/img/profile.jpg">
+
+<!-- ===== FONTS — identical on all pages ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="/assets/css/style.css">
+
+<!-- ===== THEME INIT — identical on all pages ===== -->
+<script>
+(function(){try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light"){document.documentElement.setAttribute("data-theme",t);}}catch(e){}})();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "The Machine Learning Pipeline, and Where It Usually Breaks",
+  "datePublished": "2026-08-28",
+  "author": {
+    "@type": "Person",
+    "name": "Md. Forhan Shahriar Fahim",
+    "url": "https://forhanshahriarfahim.github.io/"
+  },
+  "mainEntityOfPage": "https://forhanshahriarfahim.github.io/notes/ml-pipeline-common-mistakes.html",
+  "description": "An end-to-end walk through the stages of a machine learning project, and the mistake most often made at each one."
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ===== NAV — identical on all pages ===== -->
+<nav class="site-nav" aria-label="Primary">
+  <div class="site-nav__inner">
+    <a class="site-nav__name" href="/index.html">Md. Forhan Shahriar Fahim</a>
+    <div class="site-nav__links">
+      <a href="/index.html">About</a>
+      <a href="/research.html">Research</a>
+      <a href="/publications.html">Publications</a>
+      <a href="/teaching.html">Teaching</a>
+      <a href="/notes.html" aria-current="page">Notes</a>
+      <a href="/cv.html">CV</a>
+      <button class="theme-toggle" type="button" aria-label="Switch to dark theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+  <article class="wrap">
+
+    <header class="post-head">
+      <h1>The Machine Learning Pipeline, and Where It Usually Breaks</h1>
+      <p class="post-meta"><time datetime="2026-08-28">28 August 2026</time> &middot; 9 min read</p>
+    </header>
+
+    <!-- Decorative hero. Deliberately text-free so it stays legible at any
+         width, and drawn with CSS variables so it follows the page theme. -->
+    <svg class="hero-figure" viewBox="0 0 800 280" role="img"
+         aria-label="Scattered raw observations flow through a narrowing pipeline and emerge as a smooth output curve.">
+      <g>
+        <circle cx="72"  cy="96"  r="4"   fill="var(--accent)" opacity=".55"/>
+        <circle cx="98"  cy="72"  r="3"   fill="var(--accent)" opacity=".40"/>
+        <circle cx="120" cy="112" r="6.5" fill="var(--accent)" opacity=".75"/>
+        <circle cx="86"  cy="142" r="5"   fill="var(--accent)" opacity=".60"/>
+        <circle cx="112" cy="168" r="3.5" fill="var(--accent)" opacity=".45"/>
+        <circle cx="146" cy="86"  r="4.5" fill="var(--accent)" opacity=".65"/>
+        <circle cx="152" cy="132" r="7"   fill="var(--accent)" opacity=".80"/>
+        <circle cx="178" cy="106" r="3"   fill="var(--accent)" opacity=".40"/>
+        <circle cx="168" cy="160" r="5"   fill="var(--accent)" opacity=".60"/>
+        <circle cx="198" cy="130" r="4"   fill="var(--accent)" opacity=".50"/>
+        <circle cx="128" cy="192" r="4.5" fill="var(--accent)" opacity=".55"/>
+        <circle cx="94"  cy="198" r="3"   fill="var(--accent)" opacity=".35"/>
+        <circle cx="206" cy="88"  r="3.5" fill="var(--accent)" opacity=".45"/>
+        <circle cx="186" cy="184" r="4"   fill="var(--accent)" opacity=".50"/>
+        <circle cx="158" cy="208" r="3"   fill="var(--accent)" opacity=".35"/>
+        <circle cx="216" cy="158" r="5"   fill="var(--accent)" opacity=".60"/>
+        <circle cx="66"  cy="168" r="3.5" fill="var(--accent)" opacity=".40"/>
+        <circle cx="126" cy="62"  r="3"   fill="var(--accent)" opacity=".35"/>
+        <circle cx="202" cy="206" r="3.5" fill="var(--accent)" opacity=".40"/>
+        <circle cx="232" cy="122" r="4"   fill="var(--accent)" opacity=".50"/>
+        <circle cx="60"  cy="124" r="3"   fill="var(--accent)" opacity=".35"/>
+        <circle cx="142" cy="152" r="3"   fill="var(--accent)" opacity=".40"/>
+      </g>
+
+      <g fill="none" stroke="var(--accent)" stroke-width="1.6" opacity=".35">
+        <path d="M240 110 C266 110 274 124 296 132"/>
+        <path d="M244 152 C268 152 274 144 296 140"/>
+        <path d="M236 186 C266 186 276 160 296 148"/>
+      </g>
+
+      <g>
+        <rect x="300" y="78"  width="170" height="36" rx="8" fill="var(--accent)" opacity=".85"/>
+        <rect x="318" y="126" width="134" height="36" rx="8" fill="var(--accent)" opacity=".55"/>
+        <rect x="338" y="174" width="94"  height="36" rx="8" fill="var(--accent)" opacity=".33"/>
+      </g>
+      <g stroke="var(--accent)" stroke-width="1.5" opacity=".3">
+        <path d="M352 114 L352 126"/><path d="M418 114 L418 126"/>
+        <path d="M368 162 L368 174"/><path d="M402 162 L402 174"/>
+      </g>
+
+      <g stroke="var(--accent)" stroke-width="2" opacity=".55" fill="none">
+        <path d="M478 144 L508 144"/>
+        <path d="M500 138 L508 144 L500 150"/>
+      </g>
+
+      <g stroke="var(--border-strong)" stroke-width="1.5" fill="none">
+        <path d="M520 68 L520 222"/>
+        <path d="M520 222 L768 222"/>
+      </g>
+      <path d="M526 208 C568 202 604 176 640 142 C676 108 716 86 762 76 L762 222 L526 222 Z"
+            fill="var(--accent)" opacity=".13"/>
+      <path d="M526 208 C568 202 604 176 640 142 C676 108 716 86 762 76"
+            fill="none" stroke="var(--accent)" stroke-width="2.8" stroke-linecap="round"/>
+      <circle cx="526" cy="208" r="4" fill="var(--accent)"/>
+      <circle cx="640" cy="142" r="4" fill="var(--accent)"/>
+      <circle cx="762" cy="76"  r="4" fill="var(--accent)"/>
+    </svg>
+
+    <p class="lead">
+      Most machine learning projects that fail do not fail at the model. They fail
+      somewhere in the plumbing around it &mdash; in how the data was split, how a
+      metric was chosen, how a preprocessing step was fitted. The architecture is
+      the part everyone discusses and the part that least often decides the outcome.
+    </p>
+
+    <p>
+      What follows is the pipeline end to end, with the mistake I most often see at
+      each stage. I am not writing from a position of never having made them: most
+      of these I have made myself, and the rest I now watch for when I supervise
+      undergraduate theses. The pattern is consistent enough to be worth writing
+      down.
+    </p>
+
+    <h2>The stages</h2>
+
+    <ol class="stages">
+
+      <li class="stage">
+        <div>
+          <h3>Frame the problem before touching data</h3>
+          <p>
+            Decide what decision the model informs and what a wrong answer costs.
+            Those costs are almost never symmetric: a missed tumour and a false
+            alarm are both errors, but they are not the same error, and the metric
+            you optimise should say so.
+          </p>
+          <p class="stage__mistake">
+            <strong>Common mistake:</strong> choosing a metric because it is
+            conventional rather than because it reflects the cost of being wrong.
+            Accuracy on a dataset that is 95% negative is a constant predictor
+            wearing a disguise &mdash; it will score 95% while detecting nothing.
+          </p>
+        </div>
+      </li>
+
+      <li class="stage">
+        <div>
+          <h3>Look at the data before modelling it</h3>
+          <p>
+            Plot the distributions. Count the classes. Look for duplicates, for
+            impossible values, for a suspiciously predictive column. Open a random
+            sample and actually read it.
+          </p>
+          <p class="stage__mistake">
+            <strong>Common mistake:</strong> trusting the labels. Label noise is
+            normal, particularly where annotation is expert-dependent and expensive
+            &mdash; which describes most medical datasets. If you can measure
+            inter-annotator agreement, measure it. If you cannot, hand-inspect a
+            random sample and find out empirically how clean your ceiling is.
+          </p>
+        </div>
+      </li>
+
+      <li class="stage">
+        <div>
+          <h3>Split the data, and split it first</h3>
+          <p>
+            The split should happen before any transformation, any imputation, any
+            balancing. Everything downstream is defined relative to it.
+          </p>
+          <p class="stage__mistake">
+            <strong>Common mistake:</strong> splitting randomly when the records
+            are grouped. Several slices from one patient, several functions from
+            one source file, several frames from one video &mdash; a random split
+            puts the same underlying entity on both sides, and your test score
+            becomes a memorisation score. Split by group. For anything time-ordered,
+            split by time, and never train on the future.
+          </p>
+        </div>
+      </li>
+
+      <li class="stage">
+        <div>
+          <h3>Fit preprocessing on the training set only</h3>
+          <p>
+            Scaling, imputation, encoding, vocabulary construction, feature
+            selection, dimensionality reduction &mdash; each of these learns
+            something from data, and each must learn it from training data alone.
+          </p>
+          <p class="stage__mistake">
+            <strong>Common mistake:</strong> computing a scaler, a mean, or a
+            feature ranking over the whole dataset and splitting afterwards. The
+            same applies to oversampling: running SMOTE before the split copies
+            synthetic neighbours of test points into the training set. Wrap the
+            steps in a pipeline object so the wrong order becomes structurally
+            impossible rather than merely discouraged.
+          </p>
+        </div>
+      </li>
+
+      <li class="stage">
+        <div>
+          <h3>Establish a baseline you would be embarrassed to lose to</h3>
+          <p>
+            A majority-class predictor. A logistic regression on a handful of
+            features. A small gradient-boosted tree. These take an afternoon.
+          </p>
+          <p class="stage__mistake">
+            <strong>Common mistake:</strong> skipping them entirely. Without a
+            baseline you cannot tell whether the transformer earned its complexity,
+            and the honest answer is often that the gap is far narrower than
+            expected. That is worth discovering in week one rather than month
+            three.
+          </p>
+        </div>
+      </li>
+
+      <li class="stage">
+        <div>
+          <h3>Train reproducibly</h3>
+          <p>
+            Fix the seeds. Log the configuration alongside the result. Checkpoint,
+            so that the number in your notes can be traced to the weights that
+            produced it.
+          </p>
+          <p class="stage__mistake">
+            <strong>Common mistake:</strong> tuning against the test set. Every
+            time you read test performance and change something in response, you
+            move information from the test set into your model &mdash; slowly, and
+            without any single moment that feels like cheating. Make decisions on a
+            validation split. Touch the test set once, at the end.
+          </p>
+        </div>
+      </li>
+
+      <li class="stage">
+        <div>
+          <h3>Evaluate with uncertainty attached</h3>
+          <p>
+            Report the metric that matches the framing you chose in stage one, and
+            report it with some indication of how much it moves.
+          </p>
+          <p class="stage__mistake">
+            <strong>Common mistake:</strong> a single number from a single split.
+            Run several seeds and report the spread. A two-point improvement is not
+            an improvement if seed variance is three points, and this is probably
+            the most common reason published gains fail to reproduce.
+          </p>
+        </div>
+      </li>
+
+      <li class="stage">
+        <div>
+          <h3>Interpret carefully</h3>
+          <p>
+            Attribution methods &mdash; LIME, SHAP, Grad-CAM and their relatives
+            &mdash; tell you what the model responded to. They do not tell you why
+            the underlying phenomenon is true, and they are approximations with
+            their own hyperparameters.
+          </p>
+          <p class="stage__mistake">
+            <strong>Common mistake:</strong> treating an attribution as ground
+            truth. Run the same explainer twice with different perturbation samples
+            and the ranking can shift. Check that an explanation is stable before
+            you build an argument on top of it. This is close to
+            <a href="/research.html#threads">my own research</a>, and the honest
+            summary is that faithfulness is still an open problem rather than a
+            solved one.
+          </p>
+        </div>
+      </li>
+
+      <li class="stage">
+        <div>
+          <h3>Assume the world will move</h3>
+          <p>
+            A deployed model sits in a world that keeps changing: scanners get
+            replaced, coding conventions evolve, users adapt to the system's
+            behaviour.
+          </p>
+          <p class="stage__mistake">
+            <strong>Common mistake:</strong> assuming the distribution holds.
+            A model that is not monitored is not a model whose accuracy you know
+            &mdash; it is a model whose accuracy you knew, once.
+          </p>
+        </div>
+      </li>
+
+    </ol>
+
+    <h2>Leakage deserves its own warning</h2>
+
+    <div class="pitfall">
+      <h4>The most expensive mistake</h4>
+      <p>
+        Of everything above, data leakage is the one that costs the most, because
+        it does not announce itself. It produces <em>better</em> numbers, which is
+        exactly the direction that stops people from investigating.
+      </p>
+      <p>
+        A rule that catches most cases: if a piece of information would not be
+        available at the moment the model is asked to make a real prediction, it
+        must not be available at training time either. Grouped records, temporal
+        ordering, and preprocessing fitted across the split are the three usual
+        sources.
+      </p>
+    </div>
+
+    <p>
+      The structural defence is to make the correct order the path of least
+      resistance. Rather than scaling a matrix and then splitting it, put the
+      transformation inside the estimator so it is re-fitted within every fold:
+    </p>
+
+<pre><code>from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import GroupKFold, cross_val_score
+
+pipe = Pipeline([
+    ("scale", StandardScaler()),
+    ("clf",   LogisticRegression(max_iter=1000)),
+])
+
+# The scaler is re-fitted inside each fold, on that fold's training data only,
+# and the groups keep every patient entirely on one side of the split.
+scores = cross_val_score(
+    pipe, X, y,
+    cv=GroupKFold(n_splits=5),
+    groups=patient_ids,
+    scoring="average_precision",
+)
+print(f"{scores.mean():.3f} +/- {scores.std():.3f}")</code></pre>
+
+    <p>
+      Two details in that snippet matter more than the pipeline itself.
+      <code>groups=patient_ids</code> is what prevents the same patient appearing on
+      both sides of a fold, and <code>average_precision</code> is chosen over
+      accuracy because it degrades honestly under class imbalance. Printing the
+      standard deviation alongside the mean is the whole of stage seven.
+    </p>
+
+    <h2>A checklist</h2>
+
+    <p>This is what I actually run through, roughly in order:</p>
+
+    <ul class="checklist">
+      <li>Can I state the decision this model informs, and the cost of each kind of error?</li>
+      <li>Have I looked at raw examples, including a sample of the labels?</li>
+      <li>Is the split grouped by the right entity, and ordered by time where time matters?</li>
+      <li>Is every fitted transformation inside the pipeline rather than applied beforehand?</li>
+      <li>Do I have a trivial baseline, and do I know the gap to it?</li>
+      <li>Are seeds fixed and configurations logged next to results?</li>
+      <li>Have I reported variation across seeds, not a single number?</li>
+      <li>Have I checked that my explanations are stable before believing them?</li>
+      <li>Do I know what I would monitor if this ran in production tomorrow?</li>
+    </ul>
+
+    <p>
+      None of this is where the interesting research happens, and that is rather
+      the point. The unglamorous stages are where results are actually made or
+      quietly invalidated, and they are cheap to get right if you decide to get
+      them right before you start rather than during the rebuttal.
+    </p>
+
+    <hr>
+
+    <p class="faint">
+      <a href="/notes.html">&larr; All notes</a>
+    </p>
+
+  </article>
+</main>
+
+<!-- ===== FOOTER — identical on all pages ===== -->
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <span>&copy; <span id="year">2026</span> Md. Forhan Shahriar Fahim</span>
+    <span>Built with plain HTML and CSS. <a href="https://github.com/ForhanShahriarFahim/ForhanShahriarFahim.github.io" target="_blank" rel="noopener">Source</a></span>
+  </div>
+</footer>
+
+<script src="/assets/js/main.js"></script>
+</body>
+</html>

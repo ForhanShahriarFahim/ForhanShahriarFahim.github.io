@@ -10,15 +10,54 @@ Run it after any edit:
     python check.py
 
 Exit code 0 means everything passed; 1 means something needs fixing.
+
+It can also regenerate sitemap.xml from the pages that actually exist, which is
+the easiest way to keep it correct after adding a page:
+
+    python check.py --write-sitemap
 """
 
+import datetime
 import glob
 import os
 import re
 import sys
 
-PAGES = sorted(p for p in glob.glob("*.html"))
-ROOT_RELATIVE = "404.html"  # served from any depth, so it uses absolute paths
+# Root pages plus every post under notes/. Paths are normalised to forward
+# slashes so the script behaves identically on Windows and Linux (CI).
+PAGES = sorted(
+    p.replace(os.sep, "/")
+    for p in glob.glob("*.html") + glob.glob("notes/*.html")
+)
+
+SITE = "https://forhanshahriarfahim.github.io/"
+INDEXABLE = [p for p in PAGES if p != "404.html"]
+
+
+def slug(page):
+    return "" if page == "index.html" else page
+
+
+def write_sitemap():
+    """Regenerate sitemap.xml from the pages on disk."""
+    today = datetime.date.today().isoformat()
+    lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ]
+    # Homepage first, then the rest alphabetically.
+    ordered = sorted(INDEXABLE, key=lambda p: (p != "index.html", p))
+    for page in ordered:
+        priority = "1.0" if page == "index.html" else "0.8"
+        lines.append(
+            f"  <url><loc>{SITE}{slug(page)}</loc>"
+            f"<lastmod>{today}</lastmod>"
+            f"<priority>{priority}</priority></url>"
+        )
+    lines.append("</urlset>")
+    with open("sitemap.xml", "w", encoding="utf-8", newline="\n") as fh:
+        fh.write("\n".join(lines) + "\n")
+    print(f"Wrote sitemap.xml with {len(INDEXABLE)} entries.")
 
 
 def read(path):
@@ -27,8 +66,10 @@ def read(path):
 
 
 def normalise(fragment):
-    """Collapse whitespace and drop the per-page current-page marker."""
+    """Collapse whitespace, drop the current-page marker, and make root-absolute
+    URLs comparable with the relative ones used by pages at the site root."""
     fragment = fragment.replace(' aria-current="page"', "")
+    fragment = fragment.replace('href="/', 'href="').replace('src="/', 'src="')
     return re.sub(r"\s+", " ", fragment).strip()
 
 
@@ -73,12 +114,7 @@ def main():
     # --- 2. Shared nav and footer have not drifted ---------------------------
     def shared(page, start, end):
         block = extract(sources[page], start, end)
-        if block is None:
-            return None
-        block = normalise(block)
-        if page == ROOT_RELATIVE:
-            block = block.replace('href="/', 'href="').replace('src="/', 'src="')
-        return block
+        return None if block is None else normalise(block)
 
     for label, start, end in [
         ("nav", '<nav class="site-nav"', "</nav>"),
@@ -133,12 +169,12 @@ def main():
     # --- 5. Every page appears in sitemap.xml -------------------------------
     if os.path.exists("sitemap.xml"):
         sitemap = read("sitemap.xml")
-        for page in PAGES:
-            if page == "404.html":
-                continue
-            slug = "" if page == "index.html" else page
-            if f"/{slug}<" not in sitemap:
-                problems.append(f"sitemap.xml: missing entry for {page}")
+        for page in INDEXABLE:
+            if f"{SITE}{slug(page)}<" not in sitemap:
+                problems.append(
+                    f"sitemap.xml: missing entry for {page}"
+                    " (run: python check.py --write-sitemap)"
+                )
 
     # --- 6. No CSS custom property used without being defined ---------------
     css_path = "assets/css/style.css"
@@ -161,4 +197,6 @@ def main():
 
 
 if __name__ == "__main__":
+    if "--write-sitemap" in sys.argv:
+        write_sitemap()
     sys.exit(main())

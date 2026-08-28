@@ -73,9 +73,9 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
-<!-- ===== NAV — identical on all pages. If you edit this, edit it in
-      index.html, research.html, publications.html, teaching.html, cv.html
-      and 404.html. See CONTENT-GUIDE.md. ===== -->
+<!-- ===== NAV — identical on all pages. If you edit this, edit it in every
+      .html file, including notes/ posts (which use root-absolute paths), then
+      run `python check.py` to confirm they still match. See CONTENT-GUIDE.md. ===== -->
 <nav class="site-nav" aria-label="Primary">
   <div class="site-nav__inner">
     <a class="site-nav__name" href="index.html">Md. Forhan Shahriar Fahim</a>
@@ -84,6 +84,7 @@
       <a href="research.html">Research</a>
       <a href="publications.html">Publications</a>
       <a href="teaching.html">Teaching</a>
+      <a href="notes.html">Notes</a>
       <a href="cv.html">CV</a>
       <button class="theme-toggle" type="button" aria-label="Switch to dark theme">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>

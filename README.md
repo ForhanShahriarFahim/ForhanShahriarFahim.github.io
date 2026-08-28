@@ -7,15 +7,16 @@ Live at <https://forhanshahriarfahim.github.io/>
 
 ## Stack
 
-Plain HTML, one CSS file, and about forty lines of vanilla JavaScript. No build
-step, no dependencies, no framework. GitHub Pages serves the files exactly as they
-are committed.
+Plain HTML, one CSS file, and a small vanilla JavaScript file. No build step, no
+dependencies, no framework.
 
 ```
 index.html          About, research interests, news, selected publications
 research.html       Research overview, threads, current and past projects
 publications.html   Full publication list with DOIs and BibTeX
 teaching.html       Courses, supervision, mentoring
+notes.html          Index of written notes
+notes/              One file per note
 cv.html             Web CV, links to the PDF
 404.html            Not-found page
 check.py            Consistency checker — run after every edit
@@ -40,22 +41,31 @@ Check for broken links, dead anchors, and navigation drift:
 python check.py
 ```
 
-Editing instructions — how to add a publication, a news item, an award — are in
-[CONTENT-GUIDE.md](CONTENT-GUIDE.md).
+Regenerate `sitemap.xml` after adding a page:
+
+```bash
+python check.py --write-sitemap
+```
+
+- [CONTENT-GUIDE.md](CONTENT-GUIDE.md) — how to add a publication, news item, or note.
+- [AGENTS.md](AGENTS.md) — conventions and hard rules for AI coding agents.
 
 ## Deploying
 
-Commit and push to `main`. GitHub Pages rebuilds automatically, usually within a
-minute. Pages is configured under *Settings → Pages → Deploy from a branch →
-`main` → `/ (root)`*.
+Push to `main`. [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)
+runs `check.py` and publishes to GitHub Pages **only if it passes** — so a broken
+edit fails the build instead of taking the live site down. Nothing else is
+needed; there is no manual deploy step.
+
+Pages source is set to **GitHub Actions** under *Settings → Pages*.
 
 ## Features worth knowing about
 
-- **Dark mode** follows the operating system by default and can be overridden with
-  the toggle in the navigation bar; the choice persists in `localStorage`.
-- **Structured data** — `schema.org` `Person` markup on the homepage and
-  `ScholarlyArticle` markup on the publications page, so search engines link the
-  profile and papers correctly.
+- **Dark mode** follows the operating system and can be overridden with the nav
+  toggle; the choice persists in `localStorage`, and nothing is written there
+  until you actually click, so the site keeps following the OS otherwise.
+- **Structured data** — `schema.org` `Person` on the homepage, `ScholarlyArticle`
+  on the publications page, `BlogPosting` on notes.
 - **Accessible** — semantic landmarks, a skip link, visible focus rings, and
-  AA-contrast colours in both themes.
-- **Prints cleanly** — the CV page drops the navigation and chrome when printed.
+  AA-contrast colours verified in both themes.
+- **Prints cleanly** — the CV page drops navigation and chrome when printed.

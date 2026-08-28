@@ -17,6 +17,7 @@
   --accent:        #1d4e89;
   --accent-hover:  #143761;
   --accent-soft:   #eaf0f8;
+  --warn:          #a1442a;   /* pitfall callouts; 6:1 on --bg */
   --selection:     #d8e4f2;
 
   --font-serif: "Source Serif 4", Charter, Georgia, "Times New Roman", serif;
@@ -47,6 +48,7 @@
     --accent:        #8fb8e8;
     --accent-hover:  #b0cef1;
     --accent-soft:   #1e2a3a;
+    --warn:          #e0916f;
     --selection:     #2b3d55;
   }
 }
@@ -61,6 +63,7 @@
   --accent:        #8fb8e8;
   --accent-hover:  #b0cef1;
   --accent-soft:   #1e2a3a;
+  --warn:          #e0916f;
   --selection:     #2b3d55;
 }
 
@@ -116,6 +119,25 @@ code {
 }
 hr { border: 0; border-top: 1px solid var(--border); margin: var(--space-7) 0; }
 
+blockquote {
+  margin: var(--space-5) 0; padding-left: var(--space-5);
+  border-left: 2px solid var(--border-strong);
+  color: var(--text-muted); font-style: italic;
+}
+blockquote p:last-child { margin-bottom: 0; }
+pre {
+  margin: 0 0 var(--space-4); padding: var(--space-4);
+  background: var(--bg-surface); border: 1px solid var(--border);
+  border-radius: var(--radius); font-family: var(--font-mono);
+  font-size: .82rem; line-height: 1.6; overflow-x: auto;
+}
+pre code { background: none; border: 0; padding: 0; font-size: inherit; }
+figure { margin: var(--space-6) 0; }
+figcaption {
+  font-size: .87rem; color: var(--text-faint);
+  margin-top: var(--space-3); text-align: center;
+}
+
 .muted { color: var(--text-muted); }
 .faint { color: var(--text-faint); font-size: .9rem; }
 .lead  { font-size: 1.1rem; line-height: 1.62; color: var(--text-muted); }
@@ -127,15 +149,20 @@ hr { border: 0; border-top: 1px solid var(--border); margin: var(--space-7) 0; }
 /* ---------- 4. Layout ---------- */
 .skip-link {
   position: absolute; left: var(--space-4); top: -100px; z-index: 100;
-  background: var(--accent); color: #fff; padding: var(--space-2) var(--space-4);
+  background: var(--accent); color: #fdfdfc; padding: var(--space-2) var(--space-4);
   border-radius: var(--radius); transition: top .15s;
 }
-.skip-link:focus { top: var(--space-4); color: #fff; }
+.skip-link:focus { top: var(--space-4); }
+/* --accent is light in dark mode, so the label flips to dark ink. */
+:root[data-theme="dark"] .skip-link { color: #14161a; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .skip-link { color: #14161a; }
+}
 
 .wrap      { max-width: var(--measure); margin: 0 auto; padding: 0 var(--space-5); }
 .wrap-wide { max-width: var(--wide);    margin: 0 auto; padding: 0 var(--space-5); }
 main       { padding-bottom: var(--space-8); }
-section    { scroll-margin-top: 5rem; }
+[id]       { scroll-margin-top: 5rem; }   /* clear the sticky nav on jumps */
 .page-head { padding-top: var(--space-7); }
 .page-head h1 { margin-bottom: var(--space-3); }
 
@@ -300,6 +327,21 @@ section    { scroll-margin-top: 5rem; }
 .entry ul { margin-bottom: 0; }
 .entry ul li { font-size: .96rem; color: var(--text-muted); }
 
+/* Vertical timeline: a rail with one node per entry. Used for education,
+   appointments, projects, and supervision. */
+.timeline { position: relative; padding-left: 2rem; }
+.timeline::before {
+  content: ""; position: absolute; left: 5px; top: .35rem; bottom: .5rem;
+  width: 2px; background: var(--border); border-radius: 1px;
+}
+.timeline .entry { position: relative; }
+.timeline .entry:last-child { margin-bottom: 0; }
+.timeline .entry::before {
+  content: ""; position: absolute; left: -2rem; top: .3rem;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--bg); border: 2px solid var(--accent);
+}
+
 /* Definition-style rows (skills, languages) */
 .rows { display: grid; gap: var(--space-3); margin: 0; }
 .row { display: grid; grid-template-columns: 11rem 1fr; gap: var(--space-4); align-items: baseline; }
@@ -332,6 +374,95 @@ section    { scroll-margin-top: 5rem; }
 
 .section-more { margin-top: var(--space-5); font-size: .93rem; }
 
+/* ---------- 7b. Notes and long-form posts ---------- */
+
+/* Index listing */
+.note-list { list-style: none; padding: 0; margin: 0; }
+.note-card {
+  display: grid; grid-template-columns: 104px 1fr; gap: var(--space-5);
+  align-items: start; padding: var(--space-5) 0;
+  border-bottom: 1px solid var(--border); margin: 0;
+}
+.note-card:last-child { border-bottom: 0; }
+.note-card__thumb {
+  width: 104px; height: 104px; border-radius: var(--radius);
+  border: 1px solid var(--border); background: var(--bg-surface);
+}
+.note-card__title {
+  font-family: var(--font-serif); font-size: 1.14rem; font-weight: 600;
+  line-height: 1.35; margin: 0 0 var(--space-1);
+}
+.note-card__title a { color: var(--text); }
+.note-card__title a:hover { color: var(--accent); }
+.note-card__meta {
+  font-size: .85rem; color: var(--text-faint);
+  font-variant-numeric: tabular-nums; margin: 0 0 var(--space-2);
+}
+.note-card p { margin: 0; font-size: .97rem; color: var(--text-muted); }
+
+/* Post header and hero figure */
+.post-head { padding-top: var(--space-7); margin-bottom: var(--space-5); }
+.post-head h1 { font-size: 2rem; line-height: 1.2; margin-bottom: var(--space-3); }
+.post-meta {
+  font-size: .88rem; color: var(--text-faint);
+  font-variant-numeric: tabular-nums; margin: 0;
+}
+.hero-figure {
+  display: block; width: 100%; height: auto;
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  margin-bottom: var(--space-6); background: var(--bg-surface);
+}
+
+/* Numbered pipeline stages. Plain HTML rather than SVG so the text stays
+   selectable, translatable, and legible at every width. */
+.stages { list-style: none; padding: 0; margin: 0 0 var(--space-6); counter-reset: stage; }
+.stage {
+  display: grid; grid-template-columns: 2.1rem 1fr; gap: var(--space-4);
+  padding: var(--space-5) 0; border-bottom: 1px solid var(--border);
+  margin: 0; counter-increment: stage;
+}
+.stage:last-child { border-bottom: 0; }
+.stage::before {
+  content: counter(stage);
+  font-family: var(--font-serif); font-size: 1.25rem; font-weight: 600;
+  color: var(--accent); line-height: 1.3;
+}
+.stage h3 { margin: 0 0 var(--space-2); font-size: 1.06rem; }
+.stage p { margin: 0 0 var(--space-3); font-size: .98rem; }
+.stage p:last-child { margin-bottom: 0; }
+.stage__mistake {
+  border-left: 2px solid var(--warn); padding-left: var(--space-4);
+  color: var(--text-muted);
+}
+.stage__mistake strong { color: var(--warn); }
+
+/* Standalone pitfall callout */
+.pitfall {
+  background: var(--bg-surface);
+  border: 1px solid var(--border); border-left: 3px solid var(--warn);
+  border-radius: var(--radius); padding: var(--space-4) var(--space-5);
+  margin: var(--space-5) 0;
+}
+.pitfall h4 {
+  font-family: var(--font-sans); font-size: .76rem; font-weight: 650;
+  letter-spacing: .07em; text-transform: uppercase;
+  color: var(--warn); margin: 0 0 var(--space-2);
+}
+.pitfall p { margin: 0 0 var(--space-3); font-size: .97rem; }
+.pitfall p:last-child { margin-bottom: 0; }
+
+/* Closing checklist */
+.checklist { list-style: none; padding: 0; margin: 0 0 var(--space-4); }
+.checklist li {
+  position: relative; padding-left: 1.75rem;
+  margin-bottom: var(--space-3); font-size: .98rem;
+}
+.checklist li::before {
+  content: ""; position: absolute; left: 0; top: .5em;
+  width: 9px; height: 9px; border-radius: 2px;
+  border: 1.5px solid var(--accent);
+}
+
 /* ---------- 8. Footer ---------- */
 .site-footer {
   border-top: 1px solid var(--border); padding: var(--space-6) 0 var(--space-7);
@@ -359,6 +490,7 @@ section    { scroll-margin-top: 5rem; }
     gap: var(--space-2); flex-wrap: nowrap;
   }
   .site-nav__links a { font-size: .85rem; }
+  [id] { scroll-margin-top: 7.5rem; }
 }
 
 @media (max-width: 700px) {
@@ -371,6 +503,12 @@ section    { scroll-margin-top: 5rem; }
   .news li { grid-template-columns: 1fr; gap: var(--space-1); }
   .row { grid-template-columns: 1fr; gap: var(--space-1); }
   .callout { flex-direction: column; align-items: flex-start; }
+  .note-card { grid-template-columns: 1fr; gap: var(--space-3); }
+  .note-card__thumb { width: 84px; height: 84px; }
+  .post-head h1 { font-size: 1.65rem; }
+  .stage { grid-template-columns: 1.6rem 1fr; gap: var(--space-3); }
+  .timeline { padding-left: 1.5rem; }
+  .timeline .entry::before { left: -1.5rem; }
 }
 @media (max-width: 400px) {
   .site-nav__name { font-size: .93rem; }
