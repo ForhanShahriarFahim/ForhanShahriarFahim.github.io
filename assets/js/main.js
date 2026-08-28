@@ -40,6 +40,119 @@
     var year = document.getElementById("year");
     if (year) year.textContent = String(new Date().getFullYear());
 
+    // "Last updated" comes from the page's own Last-Modified header, which on
+    // GitHub Pages is the deploy time. If the header is missing the browser
+    // returns "now", so anything in the future is rejected and the date
+    // written into the HTML is left in place as the fallback.
+    var updated = document.getElementById("updated");
+    if (updated) {
+      var when = new Date(document.lastModified);
+      if (!isNaN(when) && when.getTime() <= Date.now() + 60000) {
+        updated.textContent = when.toLocaleDateString("en-GB", {
+          day: "numeric", month: "long", year: "numeric"
+        });
+        updated.setAttribute("datetime", when.toISOString().slice(0, 10));
+      }
+    }
+
+    // News grows over time. Past a threshold the older entries collapse behind a
+    // toggle, so the homepage stays short without a nested scrollbar (which traps
+    // touch scrolling, hides items from in-page search, and prints badly).
+    // With scripting off every item simply stays visible.
+    var NEWS_VISIBLE = 6;
+    var newsList = document.querySelector(".news");
+    if (newsList && newsList.children.length > NEWS_VISIBLE) {
+      var hidden = Array.prototype.slice.call(newsList.children, NEWS_VISIBLE);
+      var label = "Show " + hidden.length + " earlier update" + (hidden.length === 1 ? "" : "s");
+
+      var toggle = document.createElement("button");
+      toggle.type = "button";
+      toggle.className = "news-toggle";
+      toggle.textContent = label;
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-controls", "news-list");
+      newsList.id = newsList.id || "news-list";
+
+      var setHidden = function (state) {
+        hidden.forEach(function (li) { li.hidden = state; });
+      };
+      setHidden(true);
+
+      toggle.addEventListener("click", function () {
+        var expanded = toggle.getAttribute("aria-expanded") === "true";
+        setHidden(expanded);
+        toggle.setAttribute("aria-expanded", String(!expanded));
+        toggle.textContent = expanded ? label : "Show fewer";
+      });
+      newsList.insertAdjacentElement("afterend", toggle);
+    }
+
+    // Progressive enhancement: add a copy button to each BibTeX panel. Done in
+    // JS so that with scripting off the citation is still plain selectable text.
+    if (navigator.clipboard) {
+      document.querySelectorAll(".bibtex pre").forEach(function (pre) {
+        var wrap = document.createElement("div");
+        wrap.className = "bibtex__panel";
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        var copy = document.createElement("button");
+        copy.type = "button";
+        copy.className = "bibtex__copy";
+        copy.textContent = "Copy";
+        copy.addEventListener("click", function () {
+          navigator.clipboard.writeText(pre.textContent.trim()).then(function () {
+            copy.textContent = "Copied";
+            setTimeout(function () { copy.textContent = "Copy"; }, 1600);
+          }, function () {
+            copy.textContent = "Press Ctrl+C";
+            setTimeout(function () { copy.textContent = "Copy"; }, 1600);
+          });
+        });
+        wrap.appendChild(copy);
+      });
+    }
+
+    // Back-to-top control. Built here rather than in markup so it exists on every
+    // page without duplicating HTML, and so readers without scripting are not
+    // shown a control that could not work anyway.
+    (function () {
+      var toTop = document.createElement("button");
+      toTop.type = "button";
+      toTop.className = "to-top";
+      toTop.setAttribute("aria-label", "Back to top");
+      toTop.innerHTML =
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" ' +
+        'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>';
+      document.body.appendChild(toTop);
+
+      var showAfter = function () { return Math.max(300, window.innerHeight * 0.6); };
+      var sync = function () {
+        toTop.classList.toggle("is-visible", window.pageYOffset > showAfter());
+      };
+
+      var ticking = false;
+      window.addEventListener("scroll", function () {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(function () { sync(); ticking = false; });
+      }, { passive: true });
+      window.addEventListener("resize", sync, { passive: true });
+      sync();
+
+      toTop.addEventListener("click", function () {
+        var reduce = window.matchMedia &&
+                     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+        // Send keyboard focus back to the top too, without fighting the scroll.
+        var first = document.querySelector(".site-nav__name");
+        if (first) {
+          try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); }
+        }
+      });
+    })();
+
     var button = document.querySelector(".theme-toggle");
     if (!button) return;
 

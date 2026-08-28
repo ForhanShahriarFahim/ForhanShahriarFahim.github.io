@@ -19,13 +19,13 @@
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/img/profile.jpg">
 
-<!-- ===== FONTS — identical on all pages ===== -->
+<!-- ===== FONTS - identical on all pages ===== -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
 <link rel="stylesheet" href="assets/css/style.css">
 
-<!-- ===== THEME INIT — identical on all pages. Must stay inline and before
+<!-- ===== THEME INIT - identical on all pages. Must stay inline and before
       the body renders, otherwise the wrong theme flashes on load. ===== -->
 <script>
 (function(){try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light"){document.documentElement.setAttribute("data-theme",t);}}catch(e){}})();
@@ -73,7 +73,7 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
-<!-- ===== NAV — identical on all pages. If you edit this, edit it in every
+<!-- ===== NAV - identical on all pages. If you edit this, edit it in every
       .html file, including notes/ posts (which use root-absolute paths), then
       run `python check.py` to confirm they still match. See CONTENT-GUIDE.md. ===== -->
 <nav class="site-nav" aria-label="Primary">
@@ -106,7 +106,7 @@
       </p>
       <p class="hero__tagline">
         I work on making deep models legible and label-efficient enough to be
-        trusted where mistakes are costly &mdash; in medicine, in security, and
+        trusted where mistakes are costly: in medicine, in security, and
         in safety-critical vision.
       </p>
       <div class="contact-row">
@@ -150,7 +150,7 @@
         My research asks a single question in several settings: <em>how do we make deep
         models legible and label-efficient enough to be trusted when the cost of a
         mistake is high?</em> In my published work I apply explainability methods
-        &mdash; LIME attributions and multi-task transformer architectures &mdash; to
+        (LIME attributions and multi-task transformer architectures) to
         source-code vulnerability detection, a domain where a prediction is only
         actionable if an engineer can see the reasoning behind it. I am now carrying
         that question into medical imaging, where I lead a PRISMA-guided systematic
@@ -174,7 +174,7 @@
         <h3>Interpretability &amp; Trustworthy Machine Learning</h3>
         <p>
           Attribution methods and multi-task architectures that make transformer
-          predictions auditable rather than merely accurate &mdash; studied so far in
+          predictions auditable rather than merely accurate, studied so far in
           cross-language source-code vulnerability detection and CWE classification.
         </p>
       </div>
@@ -204,7 +204,7 @@
 
     <section id="news">
       <h2>News</h2>
-      <!-- ===== NEWS — newest first. To add an item, copy one <li> block. ===== -->
+      <!-- ===== NEWS - newest first. To add an item, copy one <li> block. ===== -->
       <ul class="news">
         <li>
           <time datetime="2026-07">Jul 2026</time>
@@ -243,7 +243,7 @@
         <h3 class="pub__title">Explainable Multi-Task Transformer-Based Framework for Cross-Language Source Code Vulnerability Detection with Auxiliary CWE and Language Classification</h3>
         <p class="pub__authors">S. M. Imran Reza, Iffath Tanjim Moon, <span class="me">Md. Forhan Shahriar Fahim</span>, Md. Tanjid Sheikh</p>
         <p class="pub__venue">Journal of Cyber Security Technology, vol. 10, no. 1, art. 2700412, 2026</p>
-        <div class="pub__links">
+        <div class="pub__actions">
           <a class="btn-link" href="https://doi.org/10.1080/23742917.2026.2700412" target="_blank" rel="noopener">DOI</a>
         </div>
       </article>
@@ -253,7 +253,7 @@
         <h3 class="pub__title">Systematic Hybrid Analysis of Android Applications: CWE-Categorized Vulnerabilities and Practical Mitigation Strategies</h3>
         <p class="pub__authors">Md. Tanjid Sheikh, Iffath Tanjim Moon, <span class="me">Md. Forhan Shahriar Fahim</span>, Adrita Alam, Sumaya Akter Mahmuda, S. M. Imran Reza</p>
         <p class="pub__venue">2026 IEEE 2nd International Conference on Quantum Photonics, Artificial Intelligence &amp; Networking (QPAIN), pp. 1&ndash;6</p>
-        <div class="pub__links">
+        <div class="pub__actions">
           <a class="btn-link" href="https://doi.org/10.1109/QPAIN69676.2026.11546396" target="_blank" rel="noopener">DOI</a>
         </div>
       </article>
@@ -263,7 +263,7 @@
         <h3 class="pub__title">An Empirical Analysis of Transformer-Based Models with LIME Explainability for JavaScript Vulnerability Detection</h3>
         <p class="pub__authors">S. M. Imran Reza, Iffath Tanjim Moon, <span class="me">Md. Forhan Shahriar Fahim</span>, Adrita Alam, Md. Tanjid Sheikh</p>
         <p class="pub__venue">2026 5th International Conference on Electrical, Computer &amp; Telecommunication Engineering (ICECTE), pp. 1&ndash;6</p>
-        <div class="pub__links">
+        <div class="pub__actions">
           <a class="btn-link" href="https://doi.org/10.1109/ICECTE69292.2026.11429428" target="_blank" rel="noopener">DOI</a>
         </div>
       </article>
@@ -290,11 +290,16 @@
   </div>
 </main>
 
-<!-- ===== FOOTER — identical on all pages ===== -->
+<!-- ===== FOOTER - identical on all pages ===== -->
 <footer class="site-footer">
   <div class="site-footer__inner">
-    <span>&copy; <span id="year">2026</span> Md. Forhan Shahriar Fahim</span>
-    <span>Built with plain HTML and CSS. <a href="https://github.com/ForhanShahriarFahim/ForhanShahriarFahim.github.io" target="_blank" rel="noopener">Source</a></span>
+    <p>
+      &copy; <span id="year">2026</span> Md. Forhan Shahriar Fahim
+      <span class="sep" aria-hidden="true">&middot;</span>
+      <a href="mailto:forhan.shahriar.fahim@gmail.com">forhan.shahriar.fahim@gmail.com</a>
+      <span class="sep" aria-hidden="true">&middot;</span>
+      <span class="nowrap">Last updated <time id="updated" datetime="2026-08-29">29 August 2026</time></span>
+    </p>
   </div>
 </footer>
 

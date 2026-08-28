@@ -1,7 +1,7 @@
 # Content guide
 
 Everything on this site is plain HTML. There is no build step, no framework, and
-nothing to install. Edit a file, commit, push — GitHub Actions checks it and
+nothing to install. Edit a file, commit, push. GitHub Actions checks it and
 publishes it automatically, usually within a minute.
 
 **After any edit, run the checker.** It catches broken links, dead anchors, and
@@ -20,7 +20,7 @@ python -m http.server 4173
 Then open <http://localhost:4173>.
 
 > The same checker runs in CI on every push. If it fails, **the site is not
-> deployed** and the previous version stays live — so a broken edit can never
+> deployed** and the previous version stays live, so a broken edit can never
 > take the site down.
 
 ---
@@ -38,7 +38,7 @@ Then open <http://localhost:4173>.
 | `cv.html` | Web version of the CV; links to the PDF |
 | `assets/cv/` | The PDF CV |
 | `assets/css/style.css` | All styling. Colours live in the `:root` block at the top |
-| `assets/js/main.js` | Theme toggle and the footer year. Nothing else |
+| `assets/js/main.js` | Theme toggle, footer year and date, news collapse, BibTeX copy, back-to-top |
 | `check.py` | Consistency checker. Also regenerates `sitemap.xml` |
 
 ---
@@ -55,9 +55,9 @@ in the list (newest first):
 </li>
 ```
 
-Keep the list to roughly six items — delete from the bottom as you add to the top.
-The `datetime` attribute should be `YYYY` or `YYYY-MM`; the visible text between
-the tags can be written however you like.
+You do not need to delete anything: past six items the older entries collapse
+behind a toggle automatically. The `datetime` attribute should be `YYYY` or
+`YYYY-MM`; the visible text between the tags can be written however you like.
 
 ---
 
@@ -66,7 +66,7 @@ the tags can be written however you like.
 This is the one edit that touches **two** files. `check.py` fails if you forget
 the second one, so you cannot ship a mismatch by accident.
 
-### 1. `publications.html` — the canonical entry
+### 1. `publications.html`: the canonical entry
 
 Find `<!-- ===== PUBLICATION ENTRY` and copy the whole `<article>` block. Give it
 a **unique** `id`, and put it in the right year section (add a new
@@ -78,11 +78,10 @@ a **unique** `id`, and put it in the right year section (add a new
   <h3 class="pub__title">Title of the paper</h3>
   <p class="pub__authors">First Author, <span class="me">Md. Forhan Shahriar Fahim</span>, Last Author</p>
   <p class="pub__venue">Venue name, vol. 1, no. 1, pp. 1&ndash;10, 2027</p>
-  <div class="pub__links">
+  <div class="pub__actions">
     <a class="btn-link" href="https://doi.org/DOI-HERE" target="_blank" rel="noopener">DOI</a>
-  </div>
-  <details class="bibtex">
-    <summary>BibTeX</summary>
+    <details class="bibtex">
+      <summary>BibTeX</summary>
     <pre><code>@article{key2027short,
   author  = {Surname, Given Names and Fahim, Md. Forhan Shahriar},
   title   = {Title of the paper},
@@ -90,7 +89,8 @@ a **unique** `id`, and put it in the right year section (add a new
   year    = {2027},
   doi     = {DOI-HERE}
 }</code></pre>
-  </details>
+    </details>
+  </div>
 </article>
 ```
 
@@ -100,11 +100,11 @@ a **unique** `id`, and put it in the right year section (add a new
 - Add `<a class="btn-link" href="...">PDF</a>` next to the DOI link if you have a
   preprint to host.
 
-Also update the `ItemList` JSON-LD block in the `<head>` of the same file — it is
+Also update the `ItemList` JSON-LD block in the `<head>` of the same file. It is
 what search engines read. Copy the last `ListItem`, bump `"position"`, and change
 the title, authors, venue, and `sameAs` DOI.
 
-### 2. `index.html` — the homepage summary
+### 2. `index.html`: the homepage summary
 
 Paste the **same** `<article>` block into `<section id="publications">`, but
 **delete the `<details class="bibtex">` part** and the `id`. The homepage shows a
@@ -123,7 +123,7 @@ replace the content. Two things matter:
 
 - **Post pages use root-absolute paths** (`/assets/css/style.css`,
   `/index.html`), not relative ones, because they sit one directory down. Keep
-  them exactly as they are in the copied file — `check.py` compares the
+  them exactly as they are in the copied file. `check.py` compares the
   navigation across every page and will tell you if you break it.
 - Update the `<title>`, `<meta name="description">`, `og:` tags, the `canonical`
   link, and the `BlogPosting` JSON-LD block at the top.
@@ -158,7 +158,7 @@ Ordinary `<p>`, `<h2>`, `<h3>`, `<blockquote>`, `<pre><code>`, and
 ### 2. List it on `notes.html`
 
 Copy the `<li class="note-card">` block and edit the title, link, date, reading
-time, and summary. The little SVG thumbnail is inline — change the shapes or
+time, and summary. The little SVG thumbnail is inline: change the shapes or
 reuse it as-is.
 
 ### 3. Update the sitemap
@@ -171,6 +171,22 @@ This regenerates `sitemap.xml` from the files that actually exist. CI fails if
 you forget, so it will not silently go stale.
 
 ---
+
+## House style
+
+- **Never use an em dash (`&mdash;`).** Rewrite with a colon, semicolon, comma,
+  parentheses, or two sentences. Runs of em-dash asides make prose read as
+  machine-written.
+- En dashes (`&ndash;`) are correct and stay, but only in ranges
+  (`2019&ndash;2024`, `pp. 1&ndash;6`) and compounds (`CNN&ndash;LSTM`).
+- British spelling throughout.
+
+## News grows on its own
+
+Add `<li>` entries to the top of the list on `index.html` and stop thinking
+about it. Once there are more than six, `main.js` collapses the older ones
+behind a "Show earlier updates" button, so the homepage never gets long. There
+is no manual pruning and no scrollbox to maintain.
 
 ## Add an award, course, or project
 
@@ -195,7 +211,7 @@ These are ordinary lists. Copy a neighbouring `<li>`, `<div class="entry">`, or
 ## Replace the CV PDF
 
 Overwrite `assets/cv/Md_Forhan_Shahriar_Fahim_CV.pdf`, keeping the same filename.
-Nothing else needs changing — every link points at that path.
+Nothing else needs changing; every link points at that path.
 
 ## Change the photo
 
@@ -217,7 +233,7 @@ Everything is defined once, at the top of `assets/css/style.css`:
 }
 ```
 
-If you change a colour, change it in **all three** places — the `:root` block,
+If you change a colour, change it in **all three** places: the `:root` block,
 the `@media (prefers-color-scheme: dark)` block, and the `:root[data-theme="dark"]`
 block. The last two are what make the dark theme and the manual toggle work.
 
@@ -228,7 +244,7 @@ already at the limit; do not lighten it further.
 
 ## Editing the navigation
 
-The nav and footer are copied into every page deliberately — injecting them with
+The nav and footer are copied into every page deliberately, because injecting them with
 JavaScript would hide them from search engines and break the page for anyone with
 JavaScript disabled.
 

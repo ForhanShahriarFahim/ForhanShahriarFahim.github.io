@@ -2,7 +2,7 @@
 
 Personal academic website for Md. Forhan Shahriar Fahim, used for US PhD
 applications. The audience is faculty and admissions committees, so the site
-must read as a researcher's page — plain, quiet, and fast — not as a developer
+must read as a researcher's page: plain, quiet, and fast, not a developer
 portfolio.
 
 Read this before changing anything. `CONTENT-GUIDE.md` covers routine content
@@ -30,20 +30,25 @@ edits in more detail.
    either the dark theme or the manual toggle.
 6. **Keep text contrast at 4.5:1 or better** against its background, in both
    themes. `--text-faint` is already at the floor; do not lighten it.
-7. **Never persist a theme to `localStorage` on page load** — only on an
+7. **Never persist a theme to `localStorage` on page load.** Only on an
    explicit click. Writing on load pins the site to whatever the OS happened to
    be on the first visit and stops it following the system afterwards.
 8. **Do not publish personal contact details beyond email.** No phone number, no
    home address, and no referees' email addresses on the site. Those stay in the
    PDF CV only.
+9. **No em dashes anywhere.** Use a colon, semicolon, comma, parentheses, or a
+   full stop instead. Strings of em-dash asides read as machine-written, which
+   is the last impression this site should give. En dashes stay, but only for
+   ranges (`2019&ndash;2024`, `pp. 1&ndash;6`) and compounds (`CNN&ndash;LSTM`).
+   `grep -c mdash *.html notes/*.html` must return zero.
 
 ## Tone and content
 
 - Understated and factual. No marketing language, no emoji, no exclamation
   marks, no claims the CV does not support.
 - British spelling is used throughout the prose.
-- Research framing: one question — making deep models legible and
-  label-efficient enough to trust in high-stakes settings — across three threads:
+- Research framing: one question, making deep models legible and
+  label-efficient enough to trust in high-stakes settings, across three threads:
   interpretability, computer vision, and health/medical AI. The published
   vulnerability-detection papers belong under interpretability, because that is
   what they actually are (LIME, explainable multi-task transformers).
@@ -64,19 +69,19 @@ cv.html               Web CV; links to the PDF
 404.html              Not-found page (root-absolute paths)
 check.py              Consistency checker; also regenerates sitemap.xml
 assets/css/style.css  All styling. Numbered sections; tokens at the top
-assets/js/main.js     Theme toggle and footer year only
+assets/js/main.js     Theme, dates, news collapse, BibTeX copy, back-to-top
 .github/workflows/    Check-then-deploy to GitHub Pages
 ```
 
 ## Reusable components
 
-Defined in `assets/css/style.css` — prefer these over new CSS:
+Defined in `assets/css/style.css`. Prefer these over new CSS:
 
 | Class | Use |
 |---|---|
 | `.entry` + `.entry__head/__title/__date/__sub` | A dated CV-style item |
 | `.timeline` wrapping `.entry` items | Vertical rail with a node per entry |
-| `.pub` + `.pub__title/__authors/__venue/__links` | A publication record |
+| `.pub` + `.pub__title/__authors/__venue` | A publication record |
 | `.tag`, `.tag--muted` | Journal / Conference chips |
 | `.rows` + `.row` (`<dl>`) | Label-and-value pairs, e.g. skills |
 | `.news` | Dated news list on the homepage |
@@ -84,6 +89,24 @@ Defined in `assets/css/style.css` — prefer these over new CSS:
 | `.pitfall` | Warning callout in a note |
 | `.checklist` | Checklist with square markers |
 | `.callout` + `.btn` | Boxed row with an action, e.g. CV download |
+| `.pub__actions` | Row holding the DOI link and the BibTeX disclosure |
+| `.news-toggle` | Injected by main.js past 6 news items; do not hand-write |
+| `.to-top` | Back-to-top button, injected by main.js on every page |
+
+## Behaviour that lives in main.js, not markup
+
+These are injected at runtime so no page carries duplicate HTML, and so readers
+without scripting are never shown a control that could not work:
+
+- the back-to-top button,
+- the copy button on each BibTeX panel,
+- the "show earlier updates" toggle, which appears only once the news list on
+  `index.html` grows past six items. Just keep adding `<li>` entries in
+  chronological order; nothing needs pruning, and there is deliberately no
+  nested scrollbox (it would trap touch scrolling and hide items from in-page
+  search and printing),
+- the footer year and the "Last updated" date, which reads the page's own
+  `Last-Modified` header.
 
 ## Verifying
 
@@ -109,7 +132,7 @@ Do not invent credentials. Current, verified values:
 
 - Lecturer, Dept. of CSE, Pundra University of Science & Technology (Mar 2025–)
 - B.Sc. CSE, University of Rajshahi, 2019–2024, CGPA 3.66
-- Three publications, all 2026 — see `publications.html` for exact records
+- Three publications, all 2026. See `publications.html` for exact records
 - Email `forhan.shahriar.fahim@gmail.com` · ORCID `0009-0006-8705-4598`
 - Scholar `jkZQkCYAAAAJ` · GitHub & LinkedIn `ForhanShahriarFahim` /
   `forhanshahriarfahim`

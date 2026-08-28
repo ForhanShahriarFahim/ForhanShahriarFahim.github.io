@@ -86,6 +86,11 @@ body {
   line-height: 1.75;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* Push the footer to the bottom of the viewport when content is short. */
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
   /* DOIs and URLs are single unbreakable tokens; without this they overflow
      the viewport on a 320px phone. */
   overflow-wrap: break-word;
@@ -146,6 +151,7 @@ figcaption {
 
 .muted { color: var(--text-muted); }
 .faint { color: var(--text-faint); font-size: .9rem; }
+.nowrap { white-space: nowrap; }
 .lead  { font-size: 1.1rem; line-height: 1.62; color: var(--text-muted); }
 .visually-hidden {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -166,7 +172,7 @@ figcaption {
 }
 
 .wrap { max-width: var(--measure); margin: 0 auto; padding: 0 var(--gutter); }
-main       { padding-bottom: var(--space-8); }
+main       { padding-bottom: var(--space-8); flex: 1 0 auto; }
 [id]       { scroll-margin-top: 5rem; }   /* clear the sticky nav on jumps */
 .page-head { padding-top: var(--space-7); }
 .page-head h1 { margin-bottom: var(--space-3); }
@@ -267,6 +273,23 @@ main       { padding-bottom: var(--space-8); }
   padding: var(--space-3) 0; border-bottom: 1px solid var(--border); margin: 0;
 }
 .news li:last-child { border-bottom: 0; }
+/* .news li sets display:grid, which would otherwise beat the [hidden] default. */
+.news li[hidden] { display: none; }
+.news-toggle {
+  display: inline-flex; align-items: center; gap: .35rem;
+  margin-top: var(--space-4);
+  font-family: var(--font-sans); font-size: .84rem; line-height: 1.5;
+  padding: .3rem .7rem; border-radius: var(--radius);
+  border: 1px solid var(--border-strong); color: var(--text-muted);
+  background: transparent; cursor: pointer;
+}
+.news-toggle:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+.news-toggle::after {
+  content: ""; width: 7px; height: 7px;
+  border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg); transition: transform .15s;
+}
+.news-toggle[aria-expanded="true"]::after { transform: translateY(1px) rotate(-135deg); }
 .news time {
   color: var(--text-faint); font-size: .87rem;
   font-variant-numeric: tabular-nums; padding-top: .15rem;
@@ -283,7 +306,14 @@ main       { padding-bottom: var(--space-8); }
 .pub__authors { font-size: .94rem; color: var(--text-muted); margin: 0 0 var(--space-1); }
 .pub__authors .me { color: var(--text); font-weight: 650; }
 .pub__venue { font-size: .94rem; color: var(--text-muted); font-style: italic; margin: 0 0 var(--space-3); }
-.pub__links { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+/* DOI and BibTeX sit on one action row. When the BibTeX panel opens it takes
+   the full width so the code block is not squeezed into a chip-sized column. */
+.pub__actions {
+  display: flex; flex-wrap: wrap; align-items: flex-start;
+  gap: var(--space-2); margin-top: var(--space-3);
+}
+.pub__actions .bibtex { margin: 0; }
+.pub__actions .bibtex[open] { flex: 1 1 100%; }
 
 .tag {
   display: inline-block; font-size: .72rem; font-weight: 600; letter-spacing: .06em;
@@ -293,25 +323,40 @@ main       { padding-bottom: var(--space-8); }
 }
 .tag--muted { background: var(--bg-surface); color: var(--text-muted); border-color: var(--border); }
 
-.btn-link {
-  display: inline-flex; align-items: center; gap: .3rem;
-  font-size: .85rem; padding: .22rem .6rem; border-radius: var(--radius);
-  border: 1px solid var(--border-strong); color: var(--text-muted); background: transparent;
+.btn-link, .bibtex summary {
+  display: inline-flex; align-items: center; gap: .35rem;
+  font-family: var(--font-sans); font-size: .84rem; line-height: 1.5;
+  padding: .3rem .7rem; border-radius: var(--radius);
+  border: 1px solid var(--border-strong); color: var(--text-muted);
+  background: transparent; cursor: pointer; white-space: nowrap;
 }
-.btn-link:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+.btn-link:hover, .bibtex summary:hover {
+  color: var(--accent); border-color: var(--accent); background: var(--accent-soft);
+}
 
 /* BibTeX disclosure */
 .bibtex { margin-top: var(--space-3); }
-.bibtex summary {
-  display: inline-flex; align-items: center; gap: .3rem; cursor: pointer; list-style: none;
-  font-size: .85rem; padding: .22rem .6rem; border-radius: var(--radius);
-  border: 1px solid var(--border-strong); color: var(--text-muted); user-select: none;
-}
+.bibtex summary { list-style: none; user-select: none; }
 .bibtex summary::-webkit-details-marker { display: none; }
-.bibtex summary:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+/* Chevron that rotates when the panel opens. */
+.bibtex summary::after {
+  content: ""; width: 7px; height: 7px; margin-left: .1rem;
+  border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg); transition: transform .15s;
+}
+.bibtex[open] summary::after { transform: translateY(1px) rotate(-135deg); }
 .bibtex[open] summary { margin-bottom: var(--space-3); }
+.bibtex__panel { position: relative; }
+.bibtex__copy {
+  position: absolute; top: var(--space-2); right: var(--space-2);
+  font-family: var(--font-sans); font-size: .74rem; line-height: 1;
+  padding: .3rem .5rem; border-radius: 4px; cursor: pointer;
+  border: 1px solid var(--border-strong); background: var(--bg); color: var(--text-muted);
+}
+.bibtex__copy:hover { color: var(--accent); border-color: var(--accent); }
 .bibtex pre {
-  margin: 0; padding: var(--space-4); background: var(--bg-surface);
+  margin: 0; padding: var(--space-4) var(--space-6) var(--space-4) var(--space-4);
+  background: var(--bg-surface);
   border: 1px solid var(--border); border-radius: var(--radius);
   font-family: var(--font-mono); font-size: .78rem; line-height: 1.55;
   overflow-x: auto; color: var(--text-muted);
@@ -468,15 +513,60 @@ main       { padding-bottom: var(--space-8); }
   border: 1.5px solid var(--accent);
 }
 
+/* ---------- 7c. Back to top ---------- */
+/* Injected by main.js, so it needs no markup on any page. */
+.to-top {
+  position: fixed;
+  right: clamp(16px, 3vw, 32px);
+  bottom: clamp(16px, 3vw, 32px);
+  z-index: 60;
+  width: 44px; height: 44px; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #fdfdfc;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .18), 0 1px 3px rgba(0, 0, 0, .12);
+
+  /* Hidden until the reader has scrolled. visibility keeps it out of the tab
+     order while hidden; opacity and transform do the actual animation. */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px) scale(.9);
+  transition: opacity .28s ease,
+              transform .28s cubic-bezier(.22, .9, .3, 1),
+              visibility .28s,
+              background .18s ease,
+              border-color .18s ease;
+}
+.to-top.is-visible { opacity: 1; visibility: visible; transform: none; }
+.to-top:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.to-top.is-visible:hover { transform: translateY(-3px); }
+.to-top:active { transform: translateY(-1px) scale(.96); }
+.to-top svg { width: 19px; height: 19px; display: block; }
+
+:root[data-theme="dark"] .to-top { color: #14161a; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .to-top { color: #14161a; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .to-top { transition: opacity .01ms, visibility .01ms; transform: none; }
+  .to-top.is-visible:hover, .to-top:active { transform: none; }
+}
+
 /* ---------- 8. Footer ---------- */
 .site-footer {
-  border-top: 1px solid var(--border); padding: var(--space-6) 0 var(--space-7);
+  border-top: 1px solid var(--border); padding: var(--space-6) 0;
   margin-top: var(--space-8); color: var(--text-faint); font-size: .87rem;
+  flex-shrink: 0;
 }
 .site-footer__inner {
   max-width: var(--measure); margin: 0 auto; padding: 0 var(--gutter);
-  display: flex; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap;
+  text-align: center;
 }
+.site-footer p { margin: 0; line-height: 1.9; }
+.site-footer .sep { margin: 0 .45rem; color: var(--text-faint); opacity: .7; }
 .site-footer a { color: var(--text-faint); }
 .site-footer a:hover { color: var(--accent); }
 
@@ -537,7 +627,8 @@ main       { padding-bottom: var(--space-8); }
 
 /* ---------- 10. Print ---------- */
 @media print {
-  .site-nav, .site-footer, .theme-toggle, .skip-link, .callout, .bibtex { display: none !important; }
+  .site-nav, .site-footer, .theme-toggle, .skip-link, .callout, .bibtex,
+  .to-top, .news-toggle { display: none !important; }
   body { background: #fff; color: #000; font-size: 10.5pt; }
   a { color: #000; border: 0; }
   h2 { margin-top: 1.2rem; }
