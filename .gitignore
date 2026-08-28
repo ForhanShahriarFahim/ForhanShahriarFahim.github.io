@@ -1,0 +1,9 @@
+# Source files kept locally, not needed by the site
+Md. Forhan Shahriar Fahim Passport Size.JPG
+Md__Forhan_Shahriar_Fahim_Academic_CV_14_08_26_.pdf
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+__pycache__/
