@@ -25,8 +25,10 @@
   --font-mono:  ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   /* One column width for nav, hero, content, and footer, so the page keeps a
-     single left edge. Splitting these produced a visible step mid-page. */
-  --measure: 720px;
+     single left edge. Splitting these produced a visible step mid-page.
+     930 - 2x20 gutters = 890px of content. */
+  --measure: 930px;
+  --gutter:  20px;
 
   --space-1: .25rem; --space-2: .5rem;  --space-3: .75rem; --space-4: 1rem;
   --space-5: 1.5rem; --space-6: 2rem;   --space-7: 3rem;   --space-8: 4.5rem;
@@ -80,10 +82,13 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
-  font-size: 1.03rem;
-  line-height: 1.68;
+  font-size: 1.05rem;
+  line-height: 1.75;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* DOIs and URLs are single unbreakable tokens; without this they overflow
+     the viewport on a 320px phone. */
+  overflow-wrap: break-word;
 }
 ::selection { background: var(--selection); }
 img { max-width: 100%; height: auto; display: block; }
@@ -93,12 +98,12 @@ h1, h2, h3, h4 {
   font-family: var(--font-serif); font-weight: 600; line-height: 1.25;
   color: var(--text); margin: 0;
 }
-h1 { font-size: 2.1rem; letter-spacing: -.015em; }
+h1 { font-size: 3rem; letter-spacing: -.02em; }
 h2 {
-  font-size: 1.4rem; margin-top: var(--space-8); margin-bottom: var(--space-4);
+  font-size: 1.85rem; margin-top: var(--space-8); margin-bottom: var(--space-4);
   padding-bottom: var(--space-2); border-bottom: 1px solid var(--border);
 }
-h3 { font-size: 1.09rem; margin-top: var(--space-6); margin-bottom: var(--space-2); }
+h3 { font-size: 1.15rem; margin-top: var(--space-6); margin-bottom: var(--space-2); }
 h4 { font-size: 1rem; margin-bottom: var(--space-1); }
 h2:first-of-type { margin-top: var(--space-7); }
 p  { margin: 0 0 var(--space-4); }
@@ -160,7 +165,7 @@ figcaption {
   :root:not([data-theme="light"]) .skip-link { color: #14161a; }
 }
 
-.wrap { max-width: var(--measure); margin: 0 auto; padding: 0 var(--space-5); }
+.wrap { max-width: var(--measure); margin: 0 auto; padding: 0 var(--gutter); }
 main       { padding-bottom: var(--space-8); }
 [id]       { scroll-margin-top: 5rem; }   /* clear the sticky nav on jumps */
 .page-head { padding-top: var(--space-7); }
@@ -180,7 +185,7 @@ main       { padding-bottom: var(--space-8); }
   }
 }
 .site-nav__inner {
-  max-width: var(--measure); margin: 0 auto; padding: var(--space-3) var(--space-5);
+  max-width: var(--measure); margin: 0 auto; padding: var(--space-3) var(--gutter);
   display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
 }
 .site-nav__name {
@@ -216,23 +221,23 @@ main       { padding-bottom: var(--space-8); }
 }
 
 /* ---------- 6. Hero (homepage) ---------- */
-/* The horizontal padding must match .wrap: .hero is declared later, so a
-   `padding: x 0 y` shorthand here would silently cancel .wrap's gutters. */
+/* The horizontal padding must use --gutter: .hero is declared after .wrap, so
+   a `padding: x y z` shorthand here overrides .wrap's gutters entirely. */
 .hero {
-  display: grid; grid-template-columns: 172px 1fr; gap: var(--space-6);
-  align-items: start; padding: var(--space-8) var(--space-5) var(--space-6);
+  display: grid; grid-template-columns: 200px 1fr; gap: var(--space-7);
+  align-items: start; padding: var(--space-8) var(--gutter) var(--space-6);
 }
 .hero__photo {
-  width: 172px; height: 172px; border-radius: var(--radius-lg);
+  width: 200px; height: 200px; border-radius: var(--radius-lg);
   object-fit: cover; border: 1px solid var(--border); background: var(--bg-surface);
 }
-.hero__name { font-size: 2.15rem; margin-bottom: var(--space-2); }
-.hero__role { font-size: 1.02rem; color: var(--text-muted); margin-bottom: var(--space-4); }
+.hero__name { font-size: 3rem; margin-bottom: var(--space-3); }
+.hero__role { font-size: 1.08rem; color: var(--text-muted); margin-bottom: var(--space-4); }
 .hero__role a { color: var(--text-muted); border-bottom: 1px solid var(--border-strong); }
 .hero__role a:hover { color: var(--accent); }
 .hero__tagline {
-  font-family: var(--font-serif); font-size: 1.1rem; font-style: italic;
-  line-height: 1.55; color: var(--text); margin: 0 0 var(--space-5);
+  font-family: var(--font-serif); font-size: 1.2rem; font-style: italic;
+  line-height: 1.6; color: var(--text); margin: 0 0 var(--space-5);
   padding-left: var(--space-4); border-left: 2px solid var(--accent);
 }
 
@@ -402,7 +407,7 @@ main       { padding-bottom: var(--space-8); }
 
 /* Post header and hero figure */
 .post-head { padding-top: var(--space-7); margin-bottom: var(--space-5); }
-.post-head h1 { font-size: 2rem; line-height: 1.2; margin-bottom: var(--space-3); }
+.post-head h1 { font-size: 2.6rem; line-height: 1.2; margin-bottom: var(--space-3); }
 .post-meta {
   font-size: .88rem; color: var(--text-faint);
   font-variant-numeric: tabular-nums; margin: 0;
@@ -469,7 +474,7 @@ main       { padding-bottom: var(--space-8); }
   margin-top: var(--space-8); color: var(--text-faint); font-size: .87rem;
 }
 .site-footer__inner {
-  max-width: var(--measure); margin: 0 auto; padding: 0 var(--space-5);
+  max-width: var(--measure); margin: 0 auto; padding: 0 var(--gutter);
   display: flex; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap;
 }
 .site-footer a { color: var(--text-faint); }
@@ -482,7 +487,7 @@ main       { padding-bottom: var(--space-8); }
 @media (max-width: 780px) {
   .site-nav__inner {
     flex-direction: column; align-items: stretch;
-    gap: var(--space-2); padding: var(--space-3) var(--space-5);
+    gap: var(--space-2); padding: var(--space-3) var(--gutter);
   }
   .site-nav__name { font-size: .98rem; }
   .site-nav__links {
@@ -493,16 +498,22 @@ main       { padding-bottom: var(--space-8); }
   [id] { scroll-margin-top: 7.5rem; }
 }
 
+@media (max-width: 980px) {
+  h1, .hero__name { font-size: 2.5rem; }
+  .post-head h1 { font-size: 2.2rem; }
+  h2 { font-size: 1.6rem; }
+}
+
 @media (max-width: 700px) {
   body { font-size: 1rem; }
-  h1, .hero__name { font-size: 1.7rem; }
-  h2 { font-size: 1.25rem; margin-top: var(--space-7); }
+  h1, .hero__name { font-size: 1.95rem; }
+  .post-head h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.35rem; margin-top: var(--space-7); }
   /* Gutters must change at the same breakpoint for nav, content, and
      footer, or the page gains a step in its left edge. */
-  .wrap, .site-footer__inner { padding: 0 var(--space-4); }
-  .site-nav__inner { padding: var(--space-3) var(--space-4); }
-  .hero { grid-template-columns: 1fr; gap: var(--space-5); padding: var(--space-6) var(--space-4) var(--space-5); }
-  .hero__photo { width: 132px; height: 132px; }
+  :root { --gutter: 16px; }
+  .hero { grid-template-columns: 1fr; gap: var(--space-5); padding: var(--space-6) var(--gutter) var(--space-5); }
+  .hero__photo { width: 140px; height: 140px; }
   .news li { grid-template-columns: 1fr; gap: var(--space-1); }
   .row { grid-template-columns: 1fr; gap: var(--space-1); }
   .callout { flex-direction: column; align-items: flex-start; }
@@ -513,9 +524,13 @@ main       { padding-bottom: var(--space-8); }
   .timeline { padding-left: 1.5rem; }
   .timeline .entry::before { left: -1.5rem; }
 }
-@media (max-width: 400px) {
+@media (max-width: 430px) {
   .site-nav__name { font-size: .93rem; }
-  .site-nav__links a { font-size: .78rem; }
+  .site-nav__links {
+    flex-wrap: wrap; justify-content: flex-start;
+    gap: var(--space-2) var(--space-4);
+  }
+  .site-nav__links a { font-size: .82rem; }
   .theme-toggle { width: 28px; height: 28px; }
   .theme-toggle svg { width: 14px; height: 14px; }
 }
