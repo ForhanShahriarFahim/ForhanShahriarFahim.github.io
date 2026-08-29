@@ -33,8 +33,8 @@ Then open <http://localhost:4173>.
 | `research.html` | Research overview, the three research threads, current and past projects |
 | `publications.html` | The full publication list with DOIs and BibTeX |
 | `teaching.html` | Courses, research supervision, mentoring |
-| `writing.html` | Index of posts |
-| `writing/*.html` | One file per post |
+| `blog.html` | Index of posts |
+| `blog/*.html` | One file per post |
 | `cv.html` | Web version of the CV; links to the PDF |
 | `assets/cv/` | The PDF CV |
 | `assets/css/style.css` | All styling. Colours live in the `:root` block at the top |
@@ -118,7 +118,7 @@ Then run `python check.py` to confirm the two lists agree.
 
 ### 1. Create the post file
 
-Copy `writing/ml-pipeline-common-mistakes.html` to a new file in `writing/` and
+Copy `blog/ml-pipeline-common-mistakes.html` to a new file in `blog/` and
 replace the content. Two things matter:
 
 - **Post pages use root-absolute paths** (`/assets/css/style.css`,
@@ -155,7 +155,7 @@ Components available inside a post:
 Ordinary `<p>`, `<h2>`, `<h3>`, `<blockquote>`, `<pre><code>`, and
 `<figure>`/`<figcaption>` are all styled already.
 
-### 2. List it on `writing.html`
+### 2. List it on `blog.html`
 
 Copy the `<li class="note-card">` block and edit the title, link, date, reading
 time, and summary. The little SVG thumbnail is inline: change the shapes or
@@ -257,7 +257,7 @@ JavaScript would hide them from search engines and break the page for anyone wit
 JavaScript disabled.
 
 If you add or rename a page, edit the `<nav>` block in **every** `.html` file
-including the ones in `writing/`, then run `python check.py`, which compares them
+including the ones in `blog/`, then run `python check.py`, which compares them
 and fails on any difference. Post pages and `404.html` use root-absolute paths
 (`/research.html`); the checker normalises that before comparing.
 

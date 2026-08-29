@@ -23,11 +23,11 @@ import os
 import re
 import sys
 
-# Root pages plus every post under writing/. Paths are normalised to forward
+# Root pages plus every post under blog/. Paths are normalised to forward
 # slashes so the script behaves identically on Windows and Linux (CI).
 PAGES = sorted(
     p.replace(os.sep, "/")
-    for p in glob.glob("*.html") + glob.glob("writing/*.html")
+    for p in glob.glob("*.html") + glob.glob("blog/*.html")
 )
 
 SITE = "https://forhanshahriarfahim.github.io/"
@@ -192,7 +192,9 @@ def main():
     # which the browser then rendered as visible mojibake. Cheap to guard.
     nul = bytes([0])
     replacement_char = chr(0xFFFD)
-    for asset in ["assets/css/style.css", "assets/js/main.js"] + PAGES:
+    text_assets = (["assets/css/style.css", "assets/js/main.js"]
+                   + sorted(glob.glob("*.md")) + PAGES)
+    for asset in text_assets:
         if not os.path.exists(asset):
             continue
         with open(asset, "rb") as fh:

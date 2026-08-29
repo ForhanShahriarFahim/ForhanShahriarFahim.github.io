@@ -15,8 +15,8 @@ index.html          About, research interests, news, selected publications
 research.html       Research overview, threads, current and past projects
 publications.html   Full publication list with DOIs and BibTeX
 teaching.html       Courses, supervision, mentoring
-writing.html          Index of posts
-writing/            One file per post
+blog.html           Index of posts
+blog/               One file per post
 cv.html             Web CV, links to the PDF
 404.html            Not-found page
 check.py            Consistency checker; run after every edit
