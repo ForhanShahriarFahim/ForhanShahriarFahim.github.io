@@ -102,9 +102,10 @@ without scripting are never shown a control that could not work:
 - the copy button on each BibTeX panel,
 - the "show earlier updates" toggle, which appears only once the news list on
   `index.html` grows past six items. Just keep adding `<li>` entries in
-  chronological order; nothing needs pruning, and there is deliberately no
-  nested scrollbox (it would trap touch scrolling and hide items from in-page
-  search and printing),
+  chronological order; nothing needs pruning. A nested scrollbox was considered
+  and rejected: it traps touch scrolling on phones, hides items below its own
+  fold, clips when printed, and needs `tabindex` plus a label to be reachable by
+  keyboard,
 - the footer year and the "Last updated" date, which reads the page's own
   `Last-Modified` header.
 

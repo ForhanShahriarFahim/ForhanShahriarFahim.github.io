@@ -185,8 +185,8 @@ you forget, so it will not silently go stale.
 
 Add `<li>` entries to the top of the list on `index.html` and stop thinking
 about it. Once there are more than six, `main.js` collapses the older ones
-behind a "Show earlier updates" button, so the homepage never gets long. There
-is no manual pruning and no scrollbox to maintain.
+behind a "Show earlier updates" button, so the homepage never gets long, and
+nothing needs pruning by hand.
 
 ## Add an award, course, or project
 
