@@ -187,6 +187,26 @@ def main():
         for name in sorted(used - defined):
             problems.append(f"{css_path}: var({name}) is used but never defined")
 
+    # --- 7. Text assets must be clean UTF-8 with no stray control bytes ----
+    # A mangled escape sequence once wrote a literal NUL into the stylesheet,
+    # which the browser then rendered as visible mojibake. Cheap to guard.
+    nul = bytes([0])
+    replacement_char = chr(0xFFFD)
+    for asset in ["assets/css/style.css", "assets/js/main.js"] + PAGES:
+        if not os.path.exists(asset):
+            continue
+        with open(asset, "rb") as fh:
+            raw_bytes = fh.read()
+        if nul in raw_bytes:
+            problems.append(f"{asset}: contains a NUL byte (broken escape sequence?)")
+        try:
+            text = raw_bytes.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            problems.append(f"{asset}: is not valid UTF-8 ({exc})")
+            continue
+        if replacement_char in text:
+            problems.append(f"{asset}: contains U+FFFD, so a character was lost")
+
     # --- Report -------------------------------------------------------------
     print(f"Checked {len(PAGES)} pages: {', '.join(PAGES)}")
     if problems:

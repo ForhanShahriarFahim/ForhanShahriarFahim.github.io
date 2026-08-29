@@ -74,10 +74,9 @@ a **unique** `id`, and put it in the right year section (add a new
 
 ```html
 <article class="pub" id="pub-shortname-2027">
-  <span class="tag">Journal</span>
   <h3 class="pub__title">Title of the paper</h3>
   <p class="pub__authors">First Author, <span class="me">Md. Forhan Shahriar Fahim</span>, Last Author</p>
-  <p class="pub__venue">Venue name, vol. 1, no. 1, pp. 1&ndash;10, 2027</p>
+  <p class="pub__venue">Venue name, vol. 1, no. 1, pp. 1&ndash;10, 2027 <span class="pub__kind">Journal</span></p>
   <div class="pub__actions">
     <a class="btn-link" href="https://doi.org/DOI-HERE" target="_blank" rel="noopener">DOI</a>
     <details class="bibtex">
@@ -94,8 +93,8 @@ a **unique** `id`, and put it in the right year section (add a new
 </article>
 ```
 
-- Use `<span class="tag">Journal</span>` for journals and
-  `<span class="tag tag--muted">Conference</span>` for conferences.
+- `<span class="pub__kind">` holds `Journal` or `Conference`. It sits at the end
+  of the venue line as quiet text, not as a chip above the title.
 - `<span class="me">` is what bolds your own name. Keep it on your name only.
 - Add `<a class="btn-link" href="...">PDF</a>` next to the DOI link if you have a
   preprint to host.

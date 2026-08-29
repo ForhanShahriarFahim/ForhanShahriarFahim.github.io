@@ -6,3 +6,6 @@ on this repository, and this file exists only to point you there.
 
 Routine content edits (adding a publication, a news item, a note) are documented
 in [CONTENT-GUIDE.md](CONTENT-GUIDE.md).
+
+[DECISIONS.md](DECISIONS.md) records why the site is built this way, what was
+rejected, and what is still open. Read it before revisiting a settled choice.

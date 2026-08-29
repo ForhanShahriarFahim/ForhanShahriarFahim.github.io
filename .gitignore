@@ -1,13 +1,14 @@
-# Source files kept locally, not needed by the site
-Md. Forhan Shahriar Fahim Passport Size.JPG
-Md__Forhan_Shahriar_Fahim_Academic_CV_14_08_26_.pdf
+# Originals kept locally, never deployed: the full-resolution portrait that
+# assets/img/profile.jpg is cropped from, and the CV as it was before the
+# declaration and signature were removed.
+_source/
 
 # OS / editor cruft
 .DS_Store
 Thumbs.db
 desktop.ini
 __pycache__/
-.claude/
 
-# Local design-review packet: screenshots are large and must not ship with the site
+# Working folders, never part of the site
 design-review/
+.claude/

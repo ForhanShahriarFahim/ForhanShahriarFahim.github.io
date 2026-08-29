@@ -49,6 +49,7 @@ python check.py --write-sitemap
 
 - [CONTENT-GUIDE.md](CONTENT-GUIDE.md): how to add a publication, news item, or note.
 - [AGENTS.md](AGENTS.md): conventions and hard rules for AI coding agents.
+- [DECISIONS.md](DECISIONS.md): why the site is built this way, and what was rejected.
 
 ## Deploying
 
