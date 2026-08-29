@@ -23,11 +23,11 @@ import os
 import re
 import sys
 
-# Root pages plus every post under notes/. Paths are normalised to forward
+# Root pages plus every post under writing/. Paths are normalised to forward
 # slashes so the script behaves identically on Windows and Linux (CI).
 PAGES = sorted(
     p.replace(os.sep, "/")
-    for p in glob.glob("*.html") + glob.glob("notes/*.html")
+    for p in glob.glob("*.html") + glob.glob("writing/*.html")
 )
 
 SITE = "https://forhanshahriarfahim.github.io/"

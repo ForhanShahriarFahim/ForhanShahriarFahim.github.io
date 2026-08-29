@@ -46,7 +46,7 @@ Anyone rewriting the About or Research copy must preserve that thread.
 |---|---|
 | Plain HTML, one CSS file, one small JS file, no build step | Content volume is three papers and one post. A content-collection system is machinery without payoff, and nothing can break during application season. |
 | Nav and footer duplicated across every page | Injecting them with JS would hide them from search engines and break no-JS rendering. `check.py` detects drift, which makes the duplication safe. |
-| `notes/` pages and `404.html` use root-absolute paths | They are served from a different depth. `check.py` normalises this before comparing navigation. |
+| `writing/` pages and `404.html` use root-absolute paths | They are served from a different depth. `check.py` normalises this before comparing navigation. |
 | Deploy through GitHub Actions, not branch deploy | It lets `check.py` gate the deploy, so a broken edit fails the build instead of taking the live site down. |
 | Screenshots captured with headless Chrome | The preview pane scales and sometimes returns mid-paint frames. Chrome gives real resolution. Note it enforces a ~500px minimum window width, so 390px shots must be rendered inside a 390px iframe and cropped. |
 
@@ -142,7 +142,13 @@ Still **open**, deliberately not actioned:
   wall or bookshelf.
 - **Inter to Source Sans 3.** Reasonable (it would pair with Source Serif 4 as
   one superfamily) but a taste call, not a defect. Not made.
-- **Renaming "Notes" to "Writing".** Reasonable; costs a URL change. Not made.
+- ~~Renaming "Notes" to "Writing".~~ **Done on 29 August 2026.** "Notes"
+  promised short technical jottings, but the section carries reflections and
+  life events too. "Writing" covers all three without promising any, and it is
+  standard on faculty pages. Done while nothing linked to the old URL yet.
+  "Journal" was rejected as actively confusing next to a Publications page
+  listing journal articles; "Blog" as the label committees associate with
+  developer portfolios.
 - **Adding PDF or arXiv links per paper.** A content task; needs preprint URLs.
 - The homepage shows DOI only while `publications.html` shows DOI and BibTeX.
   This is intentional: the homepage is a teaser, and duplicating BibTeX blocks

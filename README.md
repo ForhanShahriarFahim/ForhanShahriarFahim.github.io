@@ -15,8 +15,8 @@ index.html          About, research interests, news, selected publications
 research.html       Research overview, threads, current and past projects
 publications.html   Full publication list with DOIs and BibTeX
 teaching.html       Courses, supervision, mentoring
-notes.html          Index of written notes
-notes/              One file per note
+writing.html          Index of posts
+writing/            One file per post
 cv.html             Web CV, links to the PDF
 404.html            Not-found page
 check.py            Consistency checker; run after every edit
@@ -66,7 +66,7 @@ Pages source is set to **GitHub Actions** under *Settings → Pages*.
   toggle; the choice persists in `localStorage`, and nothing is written there
   until you actually click, so the site keeps following the OS otherwise.
 - **Structured data**: `schema.org` `Person` on the homepage, `ScholarlyArticle`
-  on the publications page, `BlogPosting` on notes.
+  on the publications page, `BlogPosting` on posts.
 - **Accessible**: semantic landmarks, a skip link, visible focus rings, and
   AA-contrast colours verified in both themes.
 - **Prints cleanly**: the CV page drops navigation and chrome when printed.

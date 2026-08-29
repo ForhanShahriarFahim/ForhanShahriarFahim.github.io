@@ -33,8 +33,8 @@ Then open <http://localhost:4173>.
 | `research.html` | Research overview, the three research threads, current and past projects |
 | `publications.html` | The full publication list with DOIs and BibTeX |
 | `teaching.html` | Courses, research supervision, mentoring |
-| `notes.html` | Index of written notes |
-| `notes/*.html` | One file per note |
+| `writing.html` | Index of posts |
+| `writing/*.html` | One file per post |
 | `cv.html` | Web version of the CV; links to the PDF |
 | `assets/cv/` | The PDF CV |
 | `assets/css/style.css` | All styling. Colours live in the `:root` block at the top |
@@ -114,11 +114,11 @@ Then run `python check.py` to confirm the two lists agree.
 
 ---
 
-## Add a note
+## Add a post
 
 ### 1. Create the post file
 
-Copy `notes/ml-pipeline-common-mistakes.html` to a new file in `notes/` and
+Copy `writing/ml-pipeline-common-mistakes.html` to a new file in `writing/` and
 replace the content. Two things matter:
 
 - **Post pages use root-absolute paths** (`/assets/css/style.css`,
@@ -155,13 +155,21 @@ Components available inside a post:
 Ordinary `<p>`, `<h2>`, `<h3>`, `<blockquote>`, `<pre><code>`, and
 `<figure>`/`<figcaption>` are all styled already.
 
-### 2. List it on `notes.html`
+### 2. List it on `writing.html`
 
 Copy the `<li class="note-card">` block and edit the title, link, date, reading
 time, and summary. The little SVG thumbnail is inline: change the shapes or
 reuse it as-is.
 
-### 3. Update the sitemap
+### 3. Grouping, once there is more than a handful
+
+The section carries technical pieces, reflections, and the occasional post about
+where the work is going. Once there are more than about four, split the index
+under two headings, **Technical** and **Reflections**, with Technical first. A
+reader arriving from an application should meet the technical work before the
+personal writing. Until then a single list is fine.
+
+### 4. Update the sitemap
 
 ```bash
 python check.py --write-sitemap
@@ -227,7 +235,7 @@ Everything is defined once, at the top of `assets/css/style.css`:
 ```css
 :root {
   --accent: #1d4e89;   /* links, current-page underline, buttons */
-  --warn:   #a1442a;   /* pitfall callouts in notes */
+  --warn:   #a1442a;   /* pitfall callouts in posts */
   --bg:     #fdfdfc;   /* page background */
   --text:   #1a1a1a;   /* body text */
 }
@@ -249,7 +257,7 @@ JavaScript would hide them from search engines and break the page for anyone wit
 JavaScript disabled.
 
 If you add or rename a page, edit the `<nav>` block in **every** `.html` file
-including the ones in `notes/`, then run `python check.py`, which compares them
+including the ones in `writing/`, then run `python check.py`, which compares them
 and fails on any difference. Post pages and `404.html` use root-absolute paths
 (`/research.html`); the checker normalises that before comparing.
 
