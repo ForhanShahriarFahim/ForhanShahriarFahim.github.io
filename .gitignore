@@ -8,3 +8,6 @@ Thumbs.db
 desktop.ini
 __pycache__/
 .claude/
+
+# Local design-review packet: screenshots are large and must not ship with the site
+design-review/
