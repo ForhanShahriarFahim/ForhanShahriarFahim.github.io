@@ -240,7 +240,12 @@ main       { padding-bottom: var(--space-8); flex: 1 0 auto; }
   width: 200px; height: 200px; border-radius: var(--radius-lg);
   object-fit: cover; border: 1px solid var(--border); background: var(--bg-surface);
 }
-.hero__name { font-size: 3rem; margin-bottom: var(--space-3); }
+/* Optical alignment with the photo. The h1's box top already sits level with
+   the image, but the cap height of the first letter lands 0.3125em lower:
+   half-leading, plus the gap between the font's ascender and its cap height.
+   Measured on Source Serif 4 (ascender 50, cap 32 at 48px, line-height 1.25).
+   Expressed in em so it stays correct at every heading size. */
+.hero__name { font-size: 3rem; margin-top: -.3125em; margin-bottom: var(--space-3); }
 .hero__role { font-size: 1.08rem; color: var(--text-muted); margin-bottom: var(--space-4); }
 .hero__role a { color: var(--text-muted); border-bottom: 1px solid var(--border-strong); }
 .hero__role a:hover { color: var(--accent); }
@@ -603,6 +608,7 @@ main       { padding-bottom: var(--space-8); flex: 1 0 auto; }
   :root { --gutter: 16px; }
   .hero { grid-template-columns: 1fr; gap: var(--space-5); padding: var(--space-6) var(--gutter) var(--space-5); }
   .hero__photo { width: 140px; height: 140px; }
+  .hero__name { margin-top: 0; }
   .news li { grid-template-columns: 1fr; gap: var(--space-1); }
   .row { grid-template-columns: 1fr; gap: var(--space-1); }
   .callout { flex-direction: column; align-items: flex-start; }
