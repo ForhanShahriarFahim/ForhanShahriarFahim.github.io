@@ -67,7 +67,39 @@ Anyone rewriting the About or Research copy must preserve that thread.
 
 ---
 
-## The design review, 29 August 2026
+## The design review, 29 August 2026, and the partial revert
+
+**Outcome: the typographic changes were reverted at Forhan's request on
+29 August 2026.** He did not like the resulting page formatting. What survives
+from the review is the functional half; what went back is the visual half.
+
+**Kept from the review:**
+- DOI and BibTeX as text links joined by a middot, rather than two outlined
+  buttons.
+- The mobile navigation rebuild: the theme toggle is a sibling of
+  `.site-nav__links`, not a child, which is what keeps six links on one row at
+  390px with 44px tap targets. Below 345px they form a 3-column grid.
+- `.interest h3` at 1.08rem, so subheads are no longer smaller than the body
+  text they head.
+- Dark `--border` at `#31353d`; at `#2a2e35` the section rules were invisible.
+- The back-to-top control kept but quiet: no accent fill, shadow, or hover lift.
+- The theme toggle icon naming the theme it switches to, matching its aria-label.
+- The tighter portrait crop.
+- Removal of the dead `h2 { margin-top: 4.5rem }` rule, and the reading-time
+  estimate on the note.
+
+**Reverted at his request:**
+- The `--prose` measure. Running text is back to the full 890px frame at roughly
+  118 characters per line, with body line-height back at 1.75. This is a
+  deliberate, informed choice: he prefers the fuller column and matched it to a
+  reference site he likes. **Do not "fix" this again without asking him.**
+- The serif italic hero tagline with its accent bar, and the original hero
+  spacing.
+- The `JOURNAL` / `CONFERENCE` chips above publication titles.
+- The frosted-glass sticky nav and the tighter news row padding.
+- The contact row showing "Email" rather than the address itself.
+
+### What the review said originally
 
 An external design review was run against the live site and screenshots. Its
 recommendations were applied selectively. What was **accepted**:
