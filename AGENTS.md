@@ -7,6 +7,9 @@ portfolio.
 
 Read this before changing anything.
 
+- `CONTEXT.md` is the shared, current orientation to the site and its source
+  files. Read it at the start of every task and update it when a durable fact,
+  page, workflow, or project status changes.
 - `DECISIONS.md` explains *why* the site is built this way, including what was
   tried and rejected. Read it before proposing something this file forbids.
 - `CONTENT-GUIDE.md` covers routine content edits in more detail.
@@ -59,9 +62,13 @@ Read this before changing anything.
 - British spelling is used throughout the prose.
 - Research framing: one question, making deep models legible and
   label-efficient enough to trust in high-stakes settings, across three threads:
-  interpretability, computer vision, and health/medical AI. The published
+  interpretability and AI safety, computer vision, and health/medical AI,
+  including an interest in medical language models. The published
   vulnerability-detection papers belong under interpretability, because that is
   what they actually are (LIME, explainable multi-task transformers).
+- The updated PDF CV includes a research internship that the owner does not
+  want described in HTML yet. Do not add it to the site until asked. The YOLO
+  crop-disease project has ended and should not be presented as current work.
 - Web-development projects and competitive-programming ratings stay at the
   bottom of `cv.html` only. They must not appear on the homepage or the research
   page; leading with them signals "web developer" rather than "researcher".
@@ -70,8 +77,8 @@ Read this before changing anything.
 
 ```
 index.html            About, interests, news, selected publications
-research.html         Overview, three threads, current and past projects
-publications.html     Full list with DOIs and BibTeX; ItemList JSON-LD in <head>
+research.html         Overview, three threads, recent and earlier work
+publications.html     Published and accepted work; ItemList JSON-LD in <head>
 teaching.html         Courses, supervision, mentoring
 blog.html           Index of posts
 blog/*.html        One file per post (root-absolute paths)
@@ -92,7 +99,7 @@ Defined in `assets/css/style.css`. Prefer these over new CSS:
 | `.entry` + `.entry__head/__title/__date/__sub` | A dated CV-style item |
 | `.timeline` wrapping `.entry` items | Vertical rail with a node per entry |
 | `.pub` + `.pub__title/__authors/__venue` | A publication record |
-| `.tag`, `.tag--muted` | Journal / Conference chips above the publication title |
+| `.tag`, `.tag--muted` | Publication type and status chips above the title |
 | `.rows` + `.row` (`<dl>`) | Label-and-value pairs, e.g. skills |
 | `.news` | Dated news list on the homepage |
 | `.stages` + `.stage` + `.stage__mistake` | Numbered walkthrough in a note |
@@ -143,7 +150,8 @@ Do not invent credentials. Current, verified values:
 
 - Lecturer, Dept. of CSE, Pundra University of Science & Technology (Mar 2025–)
 - B.Sc. CSE, University of Rajshahi, 2019–2024, CGPA 3.66
-- Three publications, all 2026. See `publications.html` for exact records
+- Three published papers and one accepted conference paper, all 2026. See
+  `publications.html` for exact records and status
 - Email `forhan.shahriar.fahim@gmail.com` · ORCID `0009-0006-8705-4598`
 - Scholar `jkZQkCYAAAAJ` · GitHub & LinkedIn `ForhanShahriarFahim` /
   `forhanshahriarfahim`

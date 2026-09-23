@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Research &middot; Md. Forhan Shahriar Fahim</title>
-<meta name="description" content="Research on interpretable machine learning, computer vision, and label-efficient medical imaging by Md. Forhan Shahriar Fahim.">
+<meta name="description" content="Research interests of Md. Forhan Shahriar Fahim in AI safety, interpretability, computer vision, and medical AI.">
 <meta name="author" content="Md. Forhan Shahriar Fahim">
 <link rel="canonical" href="https://forhanshahriarfahim.github.io/research.html">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Research · Md. Forhan Shahriar Fahim">
-<meta property="og:description" content="Interpretable machine learning, computer vision, and label-efficient medical imaging.">
+<meta property="og:description" content="AI safety, interpretability, computer vision, and medical AI.">
 <meta property="og:url" content="https://forhanshahriarfahim.github.io/research.html">
 <meta property="og:image" content="https://forhanshahriarfahim.github.io/assets/img/profile.jpg">
 <meta name="twitter:card" content="summary">
@@ -80,16 +80,17 @@
       <p>
         So far I have worked on the interpretability side in software security, where
         large labelled corpora exist and explanation quality can be evaluated against
-        known vulnerability classes. I am now moving the same methods into medical
-        imaging, where the label scarcity problem is severe and the need for
-        explanation is acute.
+        known vulnerability classes. I completed a review of self-supervised
+        learning in cancer imaging in September 2026. I am interested in applying
+        the same questions about evidence and reliability to medical language
+        models, especially uncertainty and abstention.
       </p>
     </section>
 
     <section id="threads">
       <h2>Research Threads</h2>
 
-      <h3>1. Interpretability and trustworthy machine learning</h3>
+      <h3>1. AI safety and interpretability</h3>
       <p>
         My published work studies whether transformer models can be made to explain
         their own decisions well enough to be acted upon. In a
@@ -110,6 +111,12 @@
         concrete mitigations.
       </p>
       <p>
+        Our <a href="publications.html#pub-raaicon-2026">accepted RAAICON 2026 paper</a>
+        studies dual-encoder cross-attention for multi-language vulnerability patch
+        generation. It extends this software-security work from identifying flaws
+        to generating candidate repairs.
+      </p>
+      <p>
         The open question I find most interesting is whether post-hoc attributions
         like LIME are the right tool at all, or whether interpretability has to be
         designed into the architecture and the training objective from the start.
@@ -117,64 +124,46 @@
 
       <h3>2. Computer vision</h3>
       <p>
-        I am currently benchmarking YOLO architectures (v8 through v12) for instance
-        segmentation of crop leaf diseases, comparing the Nano, Small, and Medium
-        variants to characterise the trade-off between segmentation accuracy and
-        computational cost. For this I built a custom dataset with pixel-level polygon
-        annotations, since existing crop-disease datasets are almost entirely
-        classification-only.
+        I am interested in robust visual representations and segmentation for
+        medical imaging. I supervise undergraduate projects on brain tumour
+        segmentation using attention mechanisms and on automated tumour detection.
       </p>
       <p>
-        My undergraduate thesis addressed a related robustness question in a different
+        My undergraduate thesis addressed model robustness in a different
         modality: a hybrid CNN&ndash;LSTM framework for force-invariant surface EMG
-        pattern recognition, which reached 80% classification accuracy across varying
-        muscle contraction forces and outperformed ResNet-50 and VGG-16 baselines
-        under the same shift.
+        pattern recognition, which reached 80% classification accuracy across
+        varying muscle contraction forces. I benchmarked it against ResNet-50
+        and VGG-16.
       </p>
 
       <h3>3. Health and medical AI</h3>
       <p>
-        I lead a PRISMA-guided systematic review of self-supervised learning methods
-        for label-efficient medical image analysis, covering MRI, CT, and
-        histopathology. The review synthesises pretext-task designs, benchmark
-        datasets, and evaluation protocols, with the aim of identifying which
-        self-supervised objectives actually transfer to clinical tasks rather than
-        merely to ImageNet-style linear probes.
+        I completed a PRISMA-guided systematic review of self-supervised learning
+        methods for label-efficient medical image analysis, covering MRI, CT, and
+        histopathology. It examined pretext tasks, datasets, and evaluation
+        strategies to identify where evidence for clinical transfer is strong and
+        where it is limited. The manuscript is in preparation.
       </p>
       <p>
-        I also supervise undergraduate research in this area, including work on brain
-        tumour segmentation using attention mechanisms and on automated tumour
-        detection.
+        I am also interested in the reliability of medical large language models,
+        particularly how uncertainty and abstention can be evaluated for clinical
+        use.
       </p>
     </section>
 
     <section id="projects">
-      <h2>Current Projects</h2>
+      <h2>Recent Research</h2>
 
       <div class="timeline">
       <div class="entry">
         <div class="entry__head">
           <h3 class="entry__title">Self-Supervised Learning in Cancer Imaging: A Systematic Review</h3>
-          <span class="entry__date">Aug 2025 &ndash; present</span>
+          <span class="entry__date">Aug 2025 &ndash; Sep 2026</span>
         </div>
         <p class="entry__sub">Lead Researcher</p>
         <ul>
-          <li>PRISMA-guided review of self-supervised learning methods for label-efficient analysis of MRI, CT, and histopathology images.</li>
-          <li>Synthesising pretext-task families, datasets, and evaluation strategies to map where the field's evidence is strong and where it is thin.</li>
-          <li>Manuscript in preparation for peer review.</li>
-        </ul>
-      </div>
-
-      <div class="entry">
-        <div class="entry__head">
-          <h3 class="entry__title">Benchmarking YOLO Architectures for Crop Disease Segmentation</h3>
-          <span class="entry__date">Jun 2025 &ndash; present</span>
-        </div>
-        <p class="entry__sub">Lead Researcher</p>
-        <ul>
-          <li>Benchmarking YOLO v8&ndash;v12 for instance segmentation of crop leaf diseases across model variants.</li>
-          <li>Constructed a custom dataset with pixel-level polygon annotations for instance-segmentation training and evaluation.</li>
-          <li>Evaluating Nano, Small, and Medium variants with hyperparameter tuning to quantify the accuracy&ndash;compute trade-off.</li>
+          <li>Completed a PRISMA-guided review of self-supervised learning methods for label-efficient analysis of MRI, CT, and histopathology images.</li>
+          <li>Synthesised approaches, datasets, evaluation strategies, and research gaps for a manuscript in preparation.</li>
         </ul>
       </div>
       </div>
@@ -212,7 +201,7 @@
       <span class="sep" aria-hidden="true">&middot;</span>
       <a href="mailto:forhan.shahriar.fahim@gmail.com">forhan.shahriar.fahim@gmail.com</a>
       <span class="sep" aria-hidden="true">&middot;</span>
-      <span class="nowrap">Last updated <time id="updated" datetime="2026-08-29">29 August 2026</time></span>
+      <span class="nowrap">Last updated <time id="updated" datetime="2026-09-23">23 September 2026</time></span>
     </p>
   </div>
 </footer>

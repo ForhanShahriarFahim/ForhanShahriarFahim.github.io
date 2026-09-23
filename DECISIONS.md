@@ -4,7 +4,7 @@ Why this site looks and works the way it does. `AGENTS.md` holds the rules;
 this file holds the reasoning, including things that were tried and rejected.
 Read it before proposing a change that contradicts something here.
 
-Last updated: 29 August 2026.
+Last updated: 23 September 2026.
 
 ---
 
@@ -24,7 +24,9 @@ not separate: the papers apply LIME and explainable multi-task transformers, so
 they *are* applied interpretability in a high-stakes domain. The site states one
 question, "how do we make deep models legible and label-efficient enough to be
 trusted when the cost of a mistake is high", and shows three settings for it.
-Anyone rewriting the About or Research copy must preserve that thread.
+Anyone rewriting the About or Research copy must preserve that thread. The
+accepted 2026 VulPatchNet paper concerns patch generation and is labelled as
+accepted, without presenting it as another explainability result.
 
 ## Deliberate omissions
 
@@ -44,7 +46,7 @@ Anyone rewriting the About or Research copy must preserve that thread.
 
 | Decision | Why |
 |---|---|
-| Plain HTML, one CSS file, one small JS file, no build step | Content volume is three papers and one post. A content-collection system is machinery without payoff, and nothing can break during application season. |
+| Plain HTML, one CSS file, one small JS file, no build step | Content volume is three published papers, one accepted paper, and one post. A content-collection system is machinery without payoff, and nothing can break during application season. |
 | Nav and footer duplicated across every page | Injecting them with JS would hide them from search engines and break no-JS rendering. `check.py` detects drift, which makes the duplication safe. |
 | `blog/` pages and `404.html` use root-absolute paths | They are served from a different depth. `check.py` normalises this before comparing navigation. |
 | Deploy through GitHub Actions, not branch deploy | It lets `check.py` gate the deploy, so a broken edit fails the build instead of taking the live site down. |

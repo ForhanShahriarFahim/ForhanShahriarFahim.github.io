@@ -13,7 +13,7 @@ dependencies, no framework.
 ```
 index.html          About, research interests, news, selected publications
 research.html       Research overview, threads, current and past projects
-publications.html   Full publication list with DOIs and BibTeX
+publications.html   Published papers with DOIs and BibTeX; accepted work separately
 teaching.html       Courses, supervision, mentoring
 blog.html           Index of posts
 blog/               One file per post
@@ -22,7 +22,7 @@ cv.html             Web CV, links to the PDF
 check.py            Consistency checker; run after every edit
 assets/
   css/style.css     All styling; design tokens at the top
-  js/main.js        Theme toggle and footer year
+  js/main.js        Theme, dates, news toggle, BibTeX copy, back-to-top
   img/              Profile photo and favicon
   cv/               PDF CV
 ```
@@ -49,6 +49,8 @@ python check.py --write-sitemap
 
 - [CONTENT-GUIDE.md](CONTENT-GUIDE.md): how to add a publication, news item, or note.
 - [AGENTS.md](AGENTS.md): conventions and hard rules for AI coding agents.
+- [CONTEXT.md](CONTEXT.md): current project overview and source map; read with
+  `AGENTS.md` when starting an AI-assisted task.
 - [DECISIONS.md](DECISIONS.md): why the site is built this way, and what was rejected.
 
 ## Deploying

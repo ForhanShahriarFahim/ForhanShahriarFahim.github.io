@@ -63,10 +63,12 @@ behind a toggle automatically. The `datetime` attribute should be `YYYY` or
 
 ## Add a publication
 
-This is the one edit that touches **two** files. `check.py` fails if you forget
-the second one, so you cannot ship a mismatch by accident.
+Publication updates can touch `publications.html`, the selected list on
+`index.html`, and the summary in `cv.html`. `check.py` checks that homepage
+titles exist in the full list, but it does not verify every citation in the web
+CV. Compare those records yourself after editing.
 
-### 1. `publications.html`: the canonical entry
+### 1. `publications.html`: the canonical published entry
 
 Find `<!-- ===== PUBLICATION ENTRY` and copy the whole `<article>` block. Give it
 a **unique** `id`, and put it in the right year section (add a new
@@ -101,8 +103,8 @@ a **unique** `id`, and put it in the right year section (add a new
   preprint to host.
 
 Also update the `ItemList` JSON-LD block in the `<head>` of the same file. It is
-what search engines read. Copy the last `ListItem`, bump `"position"`, and change
-the title, authors, venue, and `sameAs` DOI.
+what search engines read. Add a `ListItem`, keep positions consecutive, and
+change the title, authors, venue, and `sameAs` DOI.
 
 ### 2. `index.html`: the homepage summary
 
@@ -110,7 +112,17 @@ Paste the **same** `<article>` block into `<section id="publications">`, but
 **delete the `<details class="bibtex">` part** and the `id`. The homepage shows a
 short list; the full record with BibTeX stays on `publications.html`.
 
-Then run `python check.py` to confirm the two lists agree.
+If the homepage selection includes the new paper, use the exact same title and
+author order there. Add a short citation to `cv.html`, then run `python check.py`.
+
+### Accepted papers
+
+Put an accepted paper in the separate **Accepted** section of
+`publications.html`, and state its status on the homepage and web CV if it is
+shown there. Add its title, author order, venue, and accepted status to the
+`ItemList` JSON-LD. Do not invent a DOI, BibTeX record, page range, or
+publication date before those details exist. When the paper is published, move
+it into the appropriate year section and add the verified bibliographic data.
 
 ---
 
