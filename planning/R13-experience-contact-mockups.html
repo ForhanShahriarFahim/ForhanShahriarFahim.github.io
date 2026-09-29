@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Experience and contact design study</title>
+  <style>
+    :root { color-scheme: light; --bg:#fdfdfc; --ink:#1a1a1a; --muted:#5b6066; --line:#e2e0db; --blue:#1d4e89; --soft:#f5f4f1; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.6 Inter,Segoe UI,Arial,sans-serif; }
+    a { color:var(--blue); text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    .wrap { max-width:1000px; margin:auto; padding:32px 24px 90px; }
+    .study-head { border-bottom:1px solid var(--line); padding-bottom:25px; margin-bottom:30px; }
+    .eyebrow { color:var(--blue); text-transform:uppercase; letter-spacing:.13em; font-size:11px; font-weight:700; }
+    .study-head h1 { font:600 clamp(30px,5vw,48px)/1.15 Georgia,serif; margin:8px 0 10px; }
+    .study-head p { max-width:700px; color:var(--muted); margin:0; }
+    .jump { display:flex; gap:8px; flex-wrap:wrap; margin-top:18px; }
+    .jump a { padding:6px 11px; border:1px solid var(--line); border-radius:99px; font-size:13px; }
+    .compare { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+    .concept { min-width:0; margin:0 0 30px; }
+    .concept-meta { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+    .concept-meta strong { font-size:13px; letter-spacing:.02em; }
+    .badge { display:inline-block; padding:2px 8px; border-radius:99px; background:#eaf0f8; color:var(--blue); font-size:11px; font-weight:700; }
+    .concept-note { margin:0 0 14px; color:var(--muted); font-size:13px; line-height:1.5; }
+    .canvas { border:1px solid var(--line); border-radius:12px; padding:28px; background:#fff; min-height:100%; }
+    .canvas h2 { font:600 29px/1.15 Georgia,serif; margin:0 0 18px; padding-bottom:11px; border-bottom:1px solid var(--line); }
+    .role { padding:0 0 21px 18px; border-left:2px solid var(--blue); margin:0 0 22px; }
+    .role:last-child { margin-bottom:0; padding-bottom:0; }
+    .role-head { display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
+    .role h3 { font:600 17px/1.35 Georgia,serif; margin:0; }
+    .date { color:var(--muted); font-size:12px; white-space:nowrap; }
+    .institution { color:var(--muted); font-size:13px; margin:2px 0 15px; }
+    .work-row { display:grid; grid-template-columns:112px 1fr; gap:9px; border-top:1px solid var(--line); padding:9px 0; font-size:13px; }
+    .work-row dt { font-weight:650; }
+    .work-row dd { margin:0; color:var(--muted); }
+    .work-row:last-child { border-bottom:1px solid var(--line); }
+    .detail-link { display:inline-block; margin-top:10px; font-size:13px; }
+    .role p:last-child { margin-bottom:0; }
+    .simple-role { display:grid; grid-template-columns:84px 1fr; gap:14px; padding:15px 0; border-bottom:1px solid var(--line); }
+    .simple-role:last-child { border-bottom:0; }
+    .simple-role .date { white-space:normal; }
+    .simple-role h3 { font:600 16px/1.35 Georgia,serif; margin:0; }
+    .simple-role p { color:var(--muted); font-size:13px; line-height:1.55; margin:7px 0; }
+    .simple-role .subhead { font-weight:650; color:var(--ink); }
+    .divider { border:0; border-top:1px solid var(--line); margin:22px 0; }
+    .subsection { margin:50px 0 18px; padding-top:15px; border-top:1px solid var(--line); }
+    .subsection h2 { font:600 28px/1.2 Georgia,serif; margin:3px 0 7px; }
+    .subsection p { color:var(--muted); max-width:700px; margin:0; }
+    .contact-line { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:9px 18px; padding:10px 0; }
+    .contact-line .email { font-weight:650; font-size:15px; }
+    .profiles { display:flex; flex-wrap:wrap; gap:7px 12px; font-size:13px; }
+    .contact-quiet .email { display:block; font-size:17px; font-weight:650; margin:0 0 9px; }
+    .contact-quiet .profiles a { padding-right:11px; border-right:1px solid var(--line); }
+    .contact-quiet .profiles a:last-child { border:0; }
+    .pill-row { display:flex; flex-wrap:wrap; align-items:center; gap:7px; }
+    .pill { display:inline-flex; align-items:center; gap:6px; min-height:39px; padding:4px 11px; border:1px solid var(--line); border-radius:99px; font-size:13px; color:var(--ink); font-weight:550; }
+    .pill svg { width:14px; height:14px; flex:none; }
+    .pill:hover { border-color:var(--blue); text-decoration:none; background:#eaf0f8; }
+    .back-demo { padding:16px 18px; border-left:2px solid var(--blue); background:var(--soft); font-size:13px; }
+    .back-demo strong { display:block; font:600 22px Georgia,serif; margin-top:6px; }
+    .small { font-size:12px; color:var(--muted); margin:12px 0 0; }
+    @media(max-width:780px) { .compare { grid-template-columns:1fr; } .canvas { min-height:0; } }
+    @media(max-width:450px) { .wrap { padding:22px 14px 60px; } .canvas { padding:20px 16px; } .role-head { display:block; } .work-row { grid-template-columns:1fr; gap:1px; } .simple-role { grid-template-columns:1fr; gap:3px; } }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="study-head">
+      <span class="eyebrow">R13 · isolated design study · not the live website</span>
+      <h1>Experience, contact and profile links</h1>
+      <p>Two Experience layouts and two compact treatments for the bottom of the page. The AMIR sentence uses the owner's account of the work; its final wording remains open for review. The manuscript is not shown as published.</p>
+      <nav class="jump" aria-label="Mockup sections"><a href="#experience-options">Experience</a><a href="#contact-options">Contact</a><a href="#profile-links">Profile links</a><a href="#backlinks">Back links</a></nav>
+    </header>
+
+    <section id="experience-options">
+      <div class="compare">
+        <article class="concept">
+          <div class="concept-meta"><strong>A · Role-led timeline</strong><span class="badge">Recommended</span></div>
+          <p class="concept-note">Supervision is a concise labelled line under the Lecturer appointment. AMIR is a separate dated role. Both are easy to scan.</p>
+          <div class="canvas">
+            <h2>Experience</h2>
+            <div class="role">
+              <div class="role-head"><h3>Lecturer, Computer Science &amp; Engineering</h3><span class="date">Mar 2025 – present</span></div>
+              <p class="institution">Pundra University of Science &amp; Technology</p>
+              <dl>
+                <div class="work-row"><dt>Teaching</dt><dd>Design and Analysis of Algorithms and Machine Learning; previously Structured Programming, Simulation and Modelling, and Web Engineering.</dd></div>
+                <div class="work-row"><dt>Supervision</dt><dd>Guide more than ten undergraduates in AI research and software capstone work, including medical-imaging topics.</dd></div>
+              </dl>
+              <a class="detail-link" href="#backlinks">Teaching and supervision details →</a>
+            </div>
+            <div class="role">
+              <div class="role-head"><h3>Research Intern</h3><span class="date">May – Dec 2025</span></div>
+              <p class="institution"><a href="https://amirl.org/" target="_blank" rel="noopener">AMIR Lab ↗</a> · Advanced Machine Intelligence Research Lab</p>
+              <p style="color:var(--muted);font-size:13px;line-height:1.55;margin:0">Screened studies for a PRISMA-guided review of self-supervised learning in cancer imaging, analysed their findings, and drafted sections and figures for the manuscript.</p>
+            </div>
+          </div>
+        </article>
+        <article class="concept">
+          <div class="concept-meta"><strong>B · Editorial rows</strong></div>
+          <p class="concept-note">Shorter and lighter, but the Lecturer role becomes a denser paragraph when supervision is included.</p>
+          <div class="canvas">
+            <h2>Experience</h2>
+            <div class="simple-role"><span class="date">2025 – present</span><div><h3>Lecturer, Computer Science &amp; Engineering</h3><p class="institution">Pundra University of Science &amp; Technology</p><p><span class="subhead">Teaching.</span> Algorithms and Machine Learning now; Structured Programming, Simulation and Modelling, and Web Engineering previously.</p><p><span class="subhead">Supervision.</span> More than ten undergraduate researchers and capstone students, including medical-imaging work.</p><a class="detail-link" href="#backlinks">Teaching details →</a></div></div>
+            <div class="simple-role"><span class="date">May – Dec 2025</span><div><h3>Research Intern</h3><p class="institution"><a href="https://amirl.org/" target="_blank" rel="noopener">AMIR Lab ↗</a></p><p>Screened studies, synthesised evidence, and drafted parts of a PRISMA-guided cancer-imaging review manuscript.</p></div></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact-options" class="subsection"><span class="eyebrow">Bottom of homepage</span><h2>Contact</h2><p>Both remove the tall grey card and keep email as the clear action. These repeat the public profiles for readers who reach the end.</p></section>
+    <div class="compare">
+      <article class="concept"><div class="concept-meta"><strong>A · Compact responsive line</strong><span class="badge">Recommended</span></div><div class="canvas"><h2>Contact</h2><div class="contact-line"><a class="email" href="mailto:forhan.shahriar.fahim@gmail.com">forhan.shahriar.fahim@gmail.com</a><div class="profiles"><a href="#profile-links">Scholar</a><a href="#profile-links">ORCID</a><a href="#profile-links">GitHub</a><a href="#profile-links">LinkedIn</a></div></div></div></article>
+      <article class="concept"><div class="concept-meta"><strong>B · Quiet two lines</strong></div><div class="canvas contact-quiet"><h2>Contact</h2><a class="email" href="mailto:forhan.shahriar.fahim@gmail.com">forhan.shahriar.fahim@gmail.com</a><div class="profiles"><a href="#profile-links">Google Scholar</a><a href="#profile-links">ORCID</a><a href="#profile-links">GitHub</a><a href="#profile-links">LinkedIn</a></div></div></article>
+    </div>
+
+    <section id="profile-links" class="subsection"><span class="eyebrow">Opening profile row</span><h2>Six profile actions</h2><p>The current row intentionally bolds Email, Scholar and CV. Equal label weight makes the grouping calmer; order can carry priority.</p></section>
+    <div class="compare">
+      <article class="concept"><div class="concept-meta"><strong>A · Equal weight, reordered</strong><span class="badge">Recommended</span></div><div class="canvas"><div class="pill-row"><a class="pill" href="#profile-links">Email</a><a class="pill" href="#profile-links">CV</a><a class="pill" href="#profile-links">Google Scholar</a><a class="pill" href="#profile-links">ORCID</a><a class="pill" href="#profile-links">GitHub</a><a class="pill" href="#profile-links">LinkedIn</a></div><p class="small">Order: contact, CV, research identity, then professional profiles. The existing site icons would remain beside each label.</p></div></article>
+      <article class="concept"><div class="concept-meta"><strong>B · Keep the existing hierarchy</strong></div><div class="canvas"><div class="pill-row"><a class="pill" style="font-weight:700" href="#profile-links">Email</a><a class="pill" style="font-weight:700" href="#profile-links">Google Scholar</a><a class="pill" style="font-weight:700" href="#profile-links">CV</a><a class="pill" style="color:#5b6066" href="#profile-links">ORCID</a><a class="pill" style="color:#5b6066" href="#profile-links">GitHub</a><a class="pill" style="color:#5b6066" href="#profile-links">LinkedIn</a></div><p class="small">Preserves the current three-primary, three-secondary treatment. The existing icons would remain.</p></div></article>
+    </div>
+
+    <section id="backlinks" class="subsection"><span class="eyebrow">Secondary pages</span><h2>Back links</h2><p>Use a contextual return link near the title of a page reached from a homepage section. The existing Research Interests detail page already has this pattern.</p></section>
+    <div class="compare"><div class="canvas"><div class="back-demo"><a href="#experience-options">← Back to Experience</a><strong>Teaching &amp; Supervision</strong></div><p class="small">Suggested for the Teaching detail page.</p></div><div class="canvas"><div class="back-demo"><a href="#contact-options">← Back to Blog</a><strong>Article title</strong></div><p class="small">Suggested for individual blog posts; the site name remains a route home everywhere.</p></div></div>
+  </main>
+</body>
+</html>

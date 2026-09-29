@@ -11,9 +11,9 @@ Plain HTML, one CSS file, and a small vanilla JavaScript file. No build step, no
 dependencies, no framework.
 
 ```
-index.html          About, research interests, news, selected publications
-research.html       Research overview, threads, current and past projects
-publications.html   Published papers with DOIs and BibTeX; accepted work separately
+index.html          Complete one-page profile and publication records
+research.html       Research interests and current/earlier research detail
+publications.html   Legacy publication URL and bookmark bridge
 teaching.html       Courses, supervision, mentoring
 blog.html           Index of posts
 blog/               One file per post
@@ -22,7 +22,7 @@ cv.html             Web CV, links to the PDF
 check.py            Consistency checker; run after every edit
 assets/
   css/style.css     All styling; design tokens at the top
-  js/main.js        Theme, dates, news toggle, BibTeX copy, back-to-top
+  js/main.js        Theme, dates, recent-news control, scroll tracking, back-to-top
   img/              Profile photo and favicon
   cv/               PDF CV
 ```
@@ -52,6 +52,8 @@ python check.py --write-sitemap
 - [CONTEXT.md](CONTEXT.md): current project overview and source map; read with
   `AGENTS.md` when starting an AI-assisted task.
 - [DECISIONS.md](DECISIONS.md): why the site is built this way, and what was rejected.
+- [ONE-PAGE-ROADMAP.md](ONE-PAGE-ROADMAP.md): staged history, current status,
+  and next action for any coding agent.
 
 ## Deploying
 
@@ -67,8 +69,8 @@ Pages source is set to **GitHub Actions** under *Settings → Pages*.
 - **Dark mode** follows the operating system and can be overridden with the nav
   toggle; the choice persists in `localStorage`, and nothing is written there
   until you actually click, so the site keeps following the OS otherwise.
-- **Structured data**: `schema.org` `Person` on the homepage, `ScholarlyArticle`
-  on the publications page, `BlogPosting` on posts.
+- **Structured data**: `schema.org` `Person` and publication `ItemList` on the
+  homepage; `BlogPosting` on posts.
 - **Accessible**: semantic landmarks, a skip link, visible focus rings, and
   AA-contrast colours verified in both themes.
 - **Prints cleanly**: the CV page drops navigation and chrome when printed.

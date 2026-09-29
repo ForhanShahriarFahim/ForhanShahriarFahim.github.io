@@ -29,16 +29,16 @@ Then open <http://localhost:4173>.
 
 | File | What it holds |
 |---|---|
-| `index.html` | Photo, bio, research interests, **News**, selected publications, contact |
-| `research.html` | Research overview, the three research threads, current and past projects |
-| `publications.html` | The full publication list with DOIs and BibTeX |
+| `index.html` | One-page academic profile, updates, full publication list, and publication `ItemList` JSON-LD |
+| `research.html` | Research overview, four stated interests, current and past projects |
+| `publications.html` | Legacy publication URL bridge; title links and old bookmark anchors lead to the homepage |
 | `teaching.html` | Courses, research supervision, mentoring |
 | `blog.html` | Index of posts |
 | `blog/*.html` | One file per post |
 | `cv.html` | Web version of the CV; links to the PDF |
 | `assets/cv/` | The PDF CV |
 | `assets/css/style.css` | All styling. Colours live in the `:root` block at the top |
-| `assets/js/main.js` | Theme toggle, footer year and date, news collapse, BibTeX copy, back-to-top |
+| `assets/js/main.js` | Theme toggle, footer year and date, news collapse, back-to-top, homepage scroll tracking |
 | `check.py` | Consistency checker. Also regenerates `sitemap.xml` |
 
 ---
@@ -55,74 +55,73 @@ in the list (newest first):
 </li>
 ```
 
-You do not need to delete anything: past six items the older entries collapse
-behind a toggle automatically. The `datetime` attribute should be `YYYY` or
+You do not need to delete anything: the fixed-height News region scrolls through
+every item, including with JavaScript off. Print expands the entire list. The
+`datetime` attribute should be `YYYY` or
 `YYYY-MM`; the visible text between the tags can be written however you like.
 
 ---
 
 ## Add a publication
 
-Publication updates can touch `publications.html`, the selected list on
-`index.html`, and the summary in `cv.html`. `check.py` checks that homepage
-titles exist in the full list, but it does not verify every citation in the web
-CV. Compare those records yourself after editing.
+The homepage is the source for all published and accepted records.
+`publications.html` is a short bridge for old links and bookmarks, not a second
+publication list. `check.py` matches its title links and IDs to the homepage
+and checks the homepage `ItemList` against visible titles, years, statuses,
+author order, venues, and title links. The web CV still needs a manual citation
+review.
 
-### 1. `publications.html`: the canonical published entry
+### 1. `index.html`: the canonical visible entry
 
-Find `<!-- ===== PUBLICATION ENTRY` and copy the whole `<article>` block. Give it
-a **unique** `id`, and put it in the right year section (add a new
-`<section id="y2027"><h2>2027</h2>` if the year does not exist yet).
+Find `<section id="publications">` and add a complete `<article>` block. Give it
+a **unique** `id`. Keep accepted work clearly marked and separate from the
+published count in the section introduction.
 
 ```html
 <article class="pub" id="pub-shortname-2027">
-  <span class="tag">Journal</span>
-  <h3 class="pub__title">Title of the paper</h3>
-  <p class="pub__authors">First Author, <span class="me">Md. Forhan Shahriar Fahim</span>, Last Author</p>
-  <p class="pub__venue">Venue name, vol. 1, no. 1, pp. 1&ndash;10, 2027</p>
-  <div class="pub__actions">
-    <a class="btn-link" href="https://doi.org/DOI-HERE" target="_blank" rel="noopener">DOI</a>
-    <details class="bibtex">
-      <summary>BibTeX</summary>
-    <pre><code>@article{key2027short,
-  author  = {Surname, Given Names and Fahim, Md. Forhan Shahriar},
-  title   = {Title of the paper},
-  journal = {Venue name},
-  year    = {2027},
-  doi     = {DOI-HERE}
-}</code></pre>
-    </details>
+  <div class="pub__date-status"><span class="pub__year">2027</span><span class="pub__status">Published</span></div>
+  <div class="pub__body">
+    <h3 class="pub__title"><a href="https://doi.org/DOI-HERE" target="_blank" rel="noopener">Title of the paper</a></h3>
+    <p class="pub__authors">First Author, <span class="me">Md. Forhan Shahriar Fahim</span>, Last Author</p>
+    <p class="pub__venue">Venue name, vol. 1, no. 1, pp. 1&ndash;10, 2027</p>
   </div>
 </article>
 ```
 
-- Use `<span class="tag">Journal</span>` for journals and
-  `<span class="tag tag--muted">Conference</span>` for conferences.
+- The year and status form a separate column on desktop and sit above the title
+  on phones. The year must match the verified publication or conference year.
+- Link the published title to its verified DOI. The arrow appears through CSS;
+  do not add an arrow character to the title text. Do not show a separate DOI
+  or BibTeX control.
 - `<span class="me">` is what bolds your own name. Keep it on your name only.
-- Add `<a class="btn-link" href="...">PDF</a>` next to the DOI link if you have a
-  preprint to host.
 
-Also update the `ItemList` JSON-LD block in the `<head>` of the same file. It is
-what search engines read. Add a `ListItem`, keep positions consecutive, and
-change the title, authors, venue, and `sameAs` DOI.
+Also update the `ItemList` JSON-LD block in the `<head>` of `index.html`. Add a
+`ListItem`, keep positions consecutive, and match the visible title, author
+order, venue, and `sameAs` DOI. This is the machine-readable publication list.
 
-### 2. `index.html`: the homepage summary
+### 2. `publications.html`: the old URL bridge
 
-Paste the **same** `<article>` block into `<section id="publications">`, but
-**delete the `<details class="bibtex">` part** and the `id`. The homepage shows a
-short list; the full record with BibTeX stays on `publications.html`.
+Add a title link under Accepted or Published work, with the **same** `id` and
+title as the homepage article. Its `href` must point to `index.html#ID`, and
+its `data-canonical-target` must be the same ID. Do not duplicate the citation,
+DOI action, or `ItemList` on this page. The shared script sends visitors who
+have JavaScript to the matching homepage anchor; without JavaScript, they can
+follow the visible title link. Keep the established old fragment IDs intact.
 
-If the homepage selection includes the new paper, use the exact same title and
-author order there. Add a short citation to `cv.html`, then run `python check.py`.
+Add or update the short citation in `cv.html`, then run `python check.py` and
+compare the web CV against the complete homepage record.
 
 ### Accepted papers
 
-Put an accepted paper in the separate **Accepted** section of
-`publications.html`, and state its status on the homepage and web CV if it is
-shown there. Add its title, author order, venue, and accepted status to the
-`ItemList` JSON-LD. Do not invent a DOI, BibTeX record, page range, or
-publication date before those details exist. When the paper is published, move
-it into the appropriate year section and add the verified bibliographic data.
+Use `<span class="pub__status pub__status--accepted">Accepted</span>` on the
+homepage and place a title link in the Accepted section of
+`publications.html`. Leave the homepage title as plain text until a verified
+paper URL exists. Include accepted status in the homepage `ItemList` description
+and the web CV. Do not invent a DOI, page range, or publication date before
+those details exist. When the paper is
+published, move its bridge link to Published work and update the complete
+homepage record, structured data, and web CV with verified details. Preserve
+the `#accepted` old bookmark route while at least one accepted paper exists.
 
 ---
 
@@ -173,6 +172,11 @@ Copy the `<li class="note-card">` block and edit the title, link, date, reading
 time, and summary. The little SVG thumbnail is inline: change the shapes or
 reuse it as-is.
 
+Also add a short `<article class="blog-preview__post">` to the homepage
+`.blog-preview`, newest first, with the post date, title link, and one-line
+summary. The homepage shows a scrollable recent-post list after three previews;
+the full archive remains on `blog.html`. Keep the one-post state unbounded.
+
 ### 3. Grouping, once there is more than a handful
 
 The section carries technical pieces, reflections, and the occasional post about
@@ -187,8 +191,9 @@ personal writing. Until then a single list is fine.
 python check.py --write-sitemap
 ```
 
-This regenerates `sitemap.xml` from the files that actually exist. CI fails if
-you forget, so it will not silently go stale.
+This regenerates `sitemap.xml` from indexable pages. The legacy publication
+bridge and `404.html` are omitted. CI fails if you forget, so it will not
+silently go stale.
 
 ---
 
@@ -203,15 +208,20 @@ you forget, so it will not silently go stale.
 
 ## News grows on its own
 
-Add `<li>` entries to the top of the list on `index.html` and stop thinking
-about it. Once there are more than six, `main.js` collapses the older ones
-behind a "Show earlier updates" button, so the homepage never gets long, and
-nothing needs pruning by hand.
+Add `<li>` entries to the top of the list on `index.html`, newest first.
+The fixed-height `.news-window` is keyboard-focusable and scrollable. Do not
+prune older entries. Print expands the entire list; no-JavaScript rendering
+keeps all entries available.
 
 ## Add an award, course, or project
 
-These are ordinary lists. Copy a neighbouring `<li>`, `<div class="entry">`, or
-`<div class="row">` and edit the text. The pattern for a dated entry is:
+On the homepage, awards are `<li>` entries in `.awards-list`, selected software
+projects are undated whole-card `<a class="project-card">` links, and current or
+earlier courses are in the Teaching row of `.role__details` under the Lecturer
+entry in Experience. AMIR Lab is a separate `.role`; keep its internship dates
+and review contribution distinct from the longer Research Work record.
+Keep project descriptions factual and link each card to its repository. For a
+dated CV or detail-page record, use the existing `.entry` pattern:
 
 ```html
 <div class="entry">
@@ -236,7 +246,8 @@ Nothing else needs changing; every link points at that path.
 ## Change the photo
 
 Replace `assets/img/profile.jpg`. Use a **square** image, ideally 600×600 or
-larger; anything else is centre-cropped by CSS. Keep the filename.
+larger; anything else is centre-cropped by CSS. The homepage displays it in a
+circle. Keep the filename.
 
 ---
 
@@ -268,12 +279,20 @@ The nav and footer are copied into every page deliberately, because injecting th
 JavaScript would hide them from search engines and break the page for anyone with
 JavaScript disabled.
 
-If you add or rename a page, edit the `<nav>` block in **every** `.html` file
-including the ones in `blog/`, then run `python check.py`, which compares them
-and fails on any difference. Post pages and `404.html` use root-absolute paths
-(`/research.html`); the checker normalises that before comparing.
+If you add or rename a homepage destination, update `.site-nav__links` and
+`.site-nav__menu-links` in the `<nav>` block of
+**every** `.html` file, including posts in `blog/`. About remains on the page
+without a nav link. The direct academic links are Research, Education, Awards,
+Experience, and Projects. Research lands at `#research` and stays active through
+Publications and Research Work; those two sections retain direct hash URLs.
+Community links directly to News and Updates. The mobile Sections menu has
+direct News and Updates, Blog, and Contact links. The homepage content
+order now matches these academic links. Run
+`python check.py`; it checks the section and nav maps and compares the shared
+blocks. Post pages and `404.html` use root-absolute paths (`/#research` for
+a homepage section); the checker normalises these paths.
 
-Then regenerate the sitemap with `python check.py --write-sitemap`.
+Regenerate the sitemap with `python check.py --write-sitemap` after adding a page.
 
 ---
 
@@ -290,5 +309,5 @@ If any of these change, search and replace across all `.html` files:
 | LinkedIn | `https://www.linkedin.com/in/forhanshahriarfahim/` |
 | Site URL | `https://forhanshahriarfahim.github.io/` |
 
-The PhD application year (`Fall 2027`) appears once, in the third About paragraph
-on `index.html`. Update or remove it once you have decisions.
+The PhD application timing (`Fall 2028`) appears in the About paragraph on
+`index.html`. Update or remove it once you have decisions.

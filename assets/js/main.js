@@ -37,6 +37,16 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
+    // Old publication URLs and paper bookmarks lead to the canonical one-page
+    // list. Without scripting, publications.html offers the same title links.
+    if (document.body.hasAttribute("data-legacy-publications")) {
+      var oldId = window.location.hash.slice(1);
+      var anchor = oldId && document.getElementById(oldId);
+      var target = (anchor && anchor.getAttribute("data-canonical-target")) || "publications";
+      window.location.replace("/#" + target);
+      return;
+    }
+
     var year = document.getElementById("year");
     if (year) year.textContent = String(new Date().getFullYear());
 
@@ -55,62 +65,103 @@
       }
     }
 
-    // News grows over time. Past a threshold the older entries collapse behind a
-    // toggle, so the homepage stays short without a nested scrollbar (which traps
-    // touch scrolling, hides items from in-page search, and prints badly).
-    // With scripting off every item simply stays visible.
-    var NEWS_VISIBLE = 6;
-    var newsList = document.querySelector(".news");
-    if (newsList && newsList.children.length > NEWS_VISIBLE) {
-      var hidden = Array.prototype.slice.call(newsList.children, NEWS_VISIBLE);
-      var label = "Show " + hidden.length + " earlier update" + (hidden.length === 1 ? "" : "s");
+    // The homepage top navigation follows the section in view. The thin bar
+    // shows reading progress in both desktop and compact layouts.
+    (function () {
+      var nav = document.querySelector(".site-nav");
+      var sections = Array.prototype.slice.call(
+        document.querySelectorAll("main > .wrap > section[id]")
+      );
+      if (!nav || !document.getElementById("research") || !sections.length) return;
 
-      var toggle = document.createElement("button");
-      toggle.type = "button";
-      toggle.className = "news-toggle";
-      toggle.textContent = label;
-      toggle.setAttribute("aria-expanded", "false");
-      toggle.setAttribute("aria-controls", "news-list");
-      newsList.id = newsList.id || "news-list";
-
-      var setHidden = function (state) {
-        hidden.forEach(function (li) { li.hidden = state; });
-      };
-      setHidden(true);
-
-      toggle.addEventListener("click", function () {
-        var expanded = toggle.getAttribute("aria-expanded") === "true";
-        setHidden(expanded);
-        toggle.setAttribute("aria-expanded", String(!expanded));
-        toggle.textContent = expanded ? label : "Show fewer";
-      });
-      newsList.insertAdjacentElement("afterend", toggle);
-    }
-
-    // Progressive enhancement: add a copy button to each BibTeX panel. Done in
-    // JS so that with scripting off the citation is still plain selectable text.
-    if (navigator.clipboard) {
-      document.querySelectorAll(".bibtex pre").forEach(function (pre) {
-        var wrap = document.createElement("div");
-        wrap.className = "bibtex__panel";
-        pre.parentNode.insertBefore(wrap, pre);
-        wrap.appendChild(pre);
-
-        var copy = document.createElement("button");
-        copy.type = "button";
-        copy.className = "bibtex__copy";
-        copy.textContent = "Copy";
-        copy.addEventListener("click", function () {
-          navigator.clipboard.writeText(pre.textContent.trim()).then(function () {
-            copy.textContent = "Copied";
-            setTimeout(function () { copy.textContent = "Copy"; }, 1600);
-          }, function () {
-            copy.textContent = "Press Ctrl+C";
-            setTimeout(function () { copy.textContent = "Copy"; }, 1600);
-          });
+      var links = Array.prototype.slice.call(
+        nav.querySelectorAll(".site-nav__links a, .site-nav__menu-links a")
+      );
+      var menu = nav.querySelector(".site-nav__menu");
+      var currentLabel = nav.querySelector(".site-nav__current");
+      if (menu) {
+        menu.querySelectorAll("a").forEach(function (link) {
+          link.addEventListener("click", function () { menu.open = false; });
         });
-        wrap.appendChild(copy);
+      }
+      document.addEventListener("keydown", function (event) {
+        if (event.key !== "Escape" || !menu || !menu.open) return;
+        menu.open = false;
+        menu.querySelector("summary").focus();
       });
+      document.addEventListener("click", function (event) {
+        if (menu && menu.open && !menu.contains(event.target)) menu.open = false;
+      });
+
+      var progress = document.createElement("span");
+      progress.className = "scroll-progress";
+      progress.setAttribute("aria-hidden", "true");
+      document.body.appendChild(progress);
+
+      var sync = function () {
+        var page = document.documentElement;
+        var maxScroll = Math.max(0, page.scrollHeight - page.clientHeight);
+        var amount = maxScroll ? Math.min(1, Math.max(0, window.scrollY / maxScroll)) : 0;
+        progress.style.transform = "scaleX(" + amount + ")";
+
+        var marker = nav.getBoundingClientRect().bottom + 32;
+        var currentId = "";
+        sections.forEach(function (section) {
+          if (section.getBoundingClientRect().top <= marker) currentId = section.id;
+        });
+        // Short final sections cannot reach the top marker at the page end.
+        if (maxScroll > 0 && window.scrollY >= maxScroll - 2) {
+          currentId = sections[sections.length - 1].id;
+        }
+        if (currentId === "about") currentId = "";
+        var inResearch = ["research", "publications", "research-work"].indexOf(currentId) !== -1;
+        var inCommunity = ["updates", "blog", "contact"].indexOf(currentId) !== -1;
+        var currentGroup = inResearch ? "research" : currentId;
+        links.forEach(function (link) {
+          var target = link.hash.slice(1);
+          if ((link.classList.contains("site-nav__community") && inCommunity) ||
+              (!link.classList.contains("site-nav__community") && target === currentGroup)) {
+            link.setAttribute("aria-current", "location");
+          }
+          else link.removeAttribute("aria-current");
+        });
+        if (currentLabel) {
+          var active = links.find(function (link) {
+            return link.classList.contains("site-nav__sublink") && link.hash.slice(1) === currentId;
+          }) || links.find(function (link) { return link.hash.slice(1) === currentGroup; });
+          currentLabel.textContent = active ? active.textContent.trim() : "All sections";
+        }
+      };
+
+      var ticking = false;
+      var schedule = function () {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(function () { sync(); ticking = false; });
+      };
+      var settleTimer;
+      window.addEventListener("scroll", function () {
+        schedule();
+        clearTimeout(settleTimer);
+        settleTimer = setTimeout(sync, 150);
+      }, { passive: true });
+      window.addEventListener("scrollend", sync);
+      window.addEventListener("resize", schedule, { passive: true });
+      window.addEventListener("hashchange", schedule);
+      window.addEventListener("load", schedule);
+      window.addEventListener("pageshow", schedule);
+      if ("IntersectionObserver" in window) {
+        var sectionObserver = new IntersectionObserver(schedule);
+        sections.forEach(function (section) { sectionObserver.observe(section); });
+      }
+      sync();
+    })();
+
+    var blogPreview = document.querySelector(".blog-preview");
+    if (blogPreview && blogPreview.children.length > 3) {
+      blogPreview.classList.add("blog-preview--scrollable");
+      blogPreview.tabIndex = 0;
+      blogPreview.setAttribute("aria-label", "Recent blog posts; scroll to read");
     }
 
     // Back-to-top control. Built here rather than in markup so it exists on every

@@ -11,14 +11,15 @@ Run it after any edit:
 
 Exit code 0 means everything passed; 1 means something needs fixing.
 
-It can also regenerate sitemap.xml from the pages that actually exist, which is
+It can also regenerate sitemap.xml from the indexable pages on disk, which is
 the easiest way to keep it correct after adding a page:
 
     python check.py --write-sitemap
 """
 
-import datetime
 import glob
+import html as html_lib
+import json
 import os
 import re
 import sys
@@ -31,7 +32,8 @@ PAGES = sorted(
 )
 
 SITE = "https://forhanshahriarfahim.github.io/"
-INDEXABLE = [p for p in PAGES if p != "404.html"]
+# The publications page is a legacy route to the canonical homepage list.
+INDEXABLE = [p for p in PAGES if p not in ("404.html", "publications.html")]
 
 
 def slug(page):
@@ -39,8 +41,7 @@ def slug(page):
 
 
 def write_sitemap():
-    """Regenerate sitemap.xml from the pages on disk."""
-    today = datetime.date.today().isoformat()
+    """Regenerate sitemap.xml from indexable pages on disk."""
     lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
@@ -48,12 +49,7 @@ def write_sitemap():
     # Homepage first, then the rest alphabetically.
     ordered = sorted(INDEXABLE, key=lambda p: (p != "index.html", p))
     for page in ordered:
-        priority = "1.0" if page == "index.html" else "0.8"
-        lines.append(
-            f"  <url><loc>{SITE}{slug(page)}</loc>"
-            f"<lastmod>{today}</lastmod>"
-            f"<priority>{priority}</priority></url>"
-        )
+        lines.append(f"  <url><loc>{SITE}{slug(page)}</loc></url>")
     lines.append("</urlset>")
     with open("sitemap.xml", "w", encoding="utf-8", newline="\n") as fh:
         fh.write("\n".join(lines) + "\n")
@@ -69,6 +65,7 @@ def normalise(fragment):
     """Collapse whitespace, drop the current-page marker, and make root-absolute
     URLs comparable with the relative ones used by pages at the site root."""
     fragment = fragment.replace(' aria-current="page"', "")
+    fragment = fragment.replace('href="./#', 'href="#')
     fragment = fragment.replace('href="/', 'href="').replace('src="/', 'src="')
     return re.sub(r"\s+", " ", fragment).strip()
 
@@ -96,7 +93,11 @@ def main():
                     problems.append(f"{page}: dead anchor {href}")
                 continue
             target, _, fragment = href.partition("#")
-            target = target.lstrip("/")
+            if target in ("./", "/"):
+                if fragment and fragment not in ids["index.html"]:
+                    problems.append(f"{page}: dead homepage anchor -> {href}")
+                continue
+            target = target.split("?", 1)[0].lstrip("/")
             if not target:
                 continue
             if not os.path.exists(target):
@@ -108,7 +109,7 @@ def main():
         for src in re.findall(r'src="([^"]+)"', html):
             if src.startswith(("http://", "https://", "data:")):
                 continue
-            if not os.path.exists(src.lstrip("/")):
+            if not os.path.exists(src.split("?", 1)[0].lstrip("/")):
                 problems.append(f"{page}: missing asset -> {src}")
 
     # --- 2. Shared nav and footer have not drifted ---------------------------
@@ -131,6 +132,40 @@ def main():
             elif block != baseline:
                 problems.append(f"{page}: {label} has drifted from index.html")
 
+    # The complete homepage map must remain reachable in both nav layouts.
+    section_map = [
+        "about", "research", "publications", "research-work", "education",
+        "awards", "experience", "projects", "updates", "blog", "contact",
+    ]
+    primary_map = [
+        "research", "education", "awards", "experience", "projects", "updates",
+    ]
+    menu_map = [
+        "research", "education", "awards", "experience", "projects",
+        "updates", "blog", "contact",
+    ]
+    home_sections = re.findall(r'<section id="([^"]+)"', sources["index.html"])
+    if home_sections != section_map:
+        problems.append("index.html: homepage section order differs from the navigation map")
+    for nav_class, end_marker, expected in (
+        ("site-nav__links", '<details class="site-nav__menu"', primary_map),
+        ("site-nav__menu-links", '</div>', menu_map),
+    ):
+        nav_group = extract(sources["index.html"], f'<div class="{nav_class}"', end_marker)
+        link_ids = re.findall(r'<a(?: class="[^"]+")? href="[^"]*#([^"]+)">', nav_group) if nav_group else []
+        if link_ids != expected:
+            problems.append(f"index.html: {nav_class} differs from the navigation map")
+    if '<a class="site-nav__community" href="./#updates">Community</a>' not in sources["index.html"] or '<details class="site-nav__community">' in sources["index.html"]:
+        problems.append("index.html: Community must link directly to News and Updates")
+    if '<a href="./#research">Research</a>' not in sources["index.html"]:
+        problems.append("index.html: Research must link directly to Research Interests")
+    for group_id in ("academic-work", "news-blog"):
+        if group_id not in ids["index.html"]:
+            problems.append(f"index.html: group #{group_id} is missing")
+    for old_id in ("interests", "news", "background", "teaching"):
+        if old_id not in ids["index.html"]:
+            problems.append(f"index.html: legacy #{old_id} bookmark is missing")
+
     # --- 3. Every page carries the required head plumbing --------------------
     required = [
         ('localStorage.getItem("theme")', "inline theme init (prevents theme flash)"),
@@ -152,19 +187,125 @@ def main():
             if "alt=" not in tag:
                 problems.append(f"{page}: <img> without alt text")
 
-    # --- 4. Publication titles on the homepage match publications.html -------
-    def titles(page):
-        return set(
-            re.sub(r"\s+", " ", t).strip()
-            for t in re.findall(r'<h3 class="pub__title">(.*?)</h3>', sources[page], re.S)
+        if page != "404.html":
+            canonical_url = SITE if page == "publications.html" else SITE + slug(page)
+            canonical = re.findall(r'<link rel="canonical" href="([^"]+)"', html)
+            og_url = re.findall(r'<meta property="og:url" content="([^"]+)"', html)
+            if canonical != [canonical_url]:
+                problems.append(f"{page}: canonical URL must be {canonical_url}")
+            if og_url != [canonical_url]:
+                problems.append(f"{page}: og:url must be {canonical_url}")
+            for prop in ("og:title", "og:description"):
+                if not re.search(rf'<meta property="{prop}" content="[^"]+"', html):
+                    problems.append(f"{page}: missing {prop}")
+            noindex = bool(re.search(r'<meta name="robots" content="[^"]*noindex', html))
+            if noindex != (page == "publications.html"):
+                problems.append(f"{page}: incorrect noindex status")
+
+    # --- 4. Homepage papers and legacy publication routes agree -------------
+    def publication_records(page):
+        return re.findall(
+            r'<article class="pub" id="(pub-[^"]+)">(.*?)</article>',
+            sources[page], re.S,
         )
 
-    home, full = titles("index.html"), titles("publications.html")
-    for title in sorted(home - full):
-        problems.append(
-            "index.html lists a publication missing from publications.html: "
-            + title[:70]
+    home_records = publication_records("index.html")
+    home_ids = [pub_id for pub_id, _ in home_records]
+    if not home_records or len(home_ids) != len(set(home_ids)):
+        problems.append("index.html: publication records are missing or have duplicate IDs")
+    if publication_records("publications.html"):
+        problems.append("publications.html: full paper records belong on index.html")
+    if '<body data-legacy-publications>' not in sources["publications.html"]:
+        problems.append("publications.html: missing legacy-route marker")
+
+    bridge_records = re.findall(
+        r'<div class="pub" id="(pub-[^"]+)" data-canonical-target="([^"]+)">'
+        r'\s*<h3 class="pub__title"><a href="index.html#([^"]+)">(.*?)</a></h3>',
+        sources["publications.html"], re.S,
+    )
+    if [pub_id for pub_id, _, _, _ in bridge_records] != home_ids:
+        problems.append("publications.html: legacy paper IDs/order differ from index.html")
+    for (pub_id, article), (bridge_id, target, href_id, title) in zip(home_records, bridge_records):
+        if bridge_id != pub_id or target != pub_id or href_id != pub_id:
+            problems.append(f"publications.html: {pub_id} does not route to its homepage anchor")
+        home_title = re.search(r'<h3 class="pub__title">(.*?)</h3>', article, re.S)
+        visible_title = html_lib.unescape(re.sub(r"<[^>]+>", "", home_title.group(1))).strip() if home_title else ""
+        if html_lib.unescape(title).strip() != visible_title:
+            problems.append(f"publications.html: {pub_id} title differs from index.html")
+    for old_id, target in {
+        "accepted": "pub-raaicon-2026",
+        "y2026": "publications",
+        "in-progress": "research-work",
+    }.items():
+        section = re.search(rf'<section id="{old_id}" data-canonical-target="([^"]+)"', sources["publications.html"])
+        if not section or section.group(1) != target or target not in ids["index.html"]:
+            problems.append(f"publications.html: legacy #{old_id} route is missing or incorrect")
+
+    def item_lists(page):
+        lists = []
+        scripts = re.findall(
+            r'<script type="application/ld\+json">(.*?)</script>',
+            sources[page], re.S,
         )
+        for script in scripts:
+            try:
+                data = json.loads(script)
+            except json.JSONDecodeError as exc:
+                problems.append(f"{page}: invalid JSON-LD ({exc})")
+                continue
+            if data.get("@type") == "ItemList":
+                lists.append(data)
+        return lists
+
+    home_lists = item_lists("index.html")
+    if len(home_lists) != 1:
+        problems.append("index.html: expected one publication ItemList JSON-LD block")
+    if item_lists("publications.html"):
+        problems.append("publications.html: publication ItemList belongs on index.html")
+    if len(home_lists) == 1:
+        items = home_lists[0].get("itemListElement", [])
+        if len(items) != len(home_records):
+            problems.append("index.html: ItemList count differs from visible papers")
+        for position, ((pub_id, article), entry) in enumerate(
+            zip(home_records, items), start=1
+        ):
+            item = entry.get("item", {})
+            if entry.get("position") != position:
+                problems.append(f"index.html: {pub_id} has wrong ItemList position")
+
+            def visible(pattern):
+                match = re.search(pattern, article, re.S)
+                if not match:
+                    return ""
+                without_tags = re.sub(r"<[^>]+>", "", match.group(1))
+                return re.sub(r"\s+", " ", html_lib.unescape(without_tags)).strip()
+
+            if item.get("name") != visible(r'<h3 class="pub__title">(.*?)</h3>'):
+                problems.append(f"index.html: {pub_id} title differs from ItemList")
+            year = visible(r'<span class="pub__year">(.*?)</span>')
+            expected_year = item.get("datePublished") or pub_id.rsplit("-", 1)[-1]
+            if year != expected_year:
+                problems.append(f"index.html: {pub_id} visible year differs from its record")
+            status = visible(r'<span class="pub__status[^\"]*">(.*?)</span>')
+            expected_status = "Published" if item.get("datePublished") else "Accepted"
+            if status != expected_status:
+                problems.append(f"index.html: {pub_id} visible status differs from its record")
+            authors = visible(r'<p class="pub__authors">(.*?)</p>').split(", ")
+            listed_authors = [author.get("name") for author in item.get("author", [])]
+            if authors != listed_authors:
+                problems.append(f"index.html: {pub_id} author order differs from ItemList")
+            venue = visible(r'<p class="pub__venue">(.*?)</p>')
+            listed_venue = item.get("isPartOf", {}).get("name", "")
+            if not listed_venue or listed_venue not in venue:
+                problems.append(f"index.html: {pub_id} venue differs from ItemList")
+            doi = re.search(r'href="(https://doi\.org/[^"]+)"', article)
+            if (doi.group(1) if doi else None) != item.get("sameAs"):
+                problems.append(f"index.html: {pub_id} DOI differs from ItemList")
+            title_link = re.search(r'<h3 class="pub__title"><a href="([^"]+)"', article)
+            if (title_link.group(1) if title_link else None) != item.get("sameAs"):
+                problems.append(f"index.html: {pub_id} title link differs from ItemList")
+            if 'class="pub__actions"' in article or 'class="bibtex"' in article:
+                problems.append(f"index.html: {pub_id} still has a DOI/BibTeX action row")
 
     # --- 5. Every page appears in sitemap.xml -------------------------------
     if os.path.exists("sitemap.xml"):

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Research interests and projects: design review</title>
+  <style>
+    :root { color-scheme: light dark; --bg:#fdfdfc; --surface:#f5f4f1; --text:#1a1a1a; --muted:#5b6066; --border:#e2e0db; --accent:#1d4e89; --soft:#eaf0f8; }
+    @media (prefers-color-scheme: dark) { :root { --bg:#14161a; --surface:#1b1e24; --text:#e7e5e2; --muted:#a8adb4; --border:#31353d; --accent:#8fb8e8; --soft:#1e2a3a; } }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.6 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; }
+    main { width:min(930px,calc(100% - 40px)); margin:42px auto 72px; }
+    h1,h2 { font-family:"Source Serif 4",Charter,Georgia,serif; font-weight:600; line-height:1.2; }
+    h1 { font-size:1.3rem; margin:0 0 28px; }
+    h2 { font-size:1.85rem; margin:0 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+    h3 { margin:0; font-size:1rem; line-height:1.4; }
+    p { margin:0; }
+    a { color:var(--accent); text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    a:focus-visible,summary:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+    .review-label { display:flex; align-items:center; gap:12px; margin:42px 0 14px; color:var(--muted); font-size:.77rem; font-weight:650; letter-spacing:.1em; text-transform:uppercase; }
+    .review-label::after { content:""; height:1px; flex:1; background:var(--border); }
+    .note { margin:0 0 18px; color:var(--muted); font-size:.91rem; }
+    .intro { color:var(--muted); margin:0 0 12px; }
+    .more { display:inline-block; margin-top:16px; font-size:.93rem; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+    details { min-width:0; }
+    summary { list-style:none; display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:48px; padding:8px 14px; font-weight:600; line-height:1.35; cursor:pointer; }
+    summary::-webkit-details-marker { display:none; }
+    .plus { flex:none; color:var(--accent); font-size:1.2rem; font-weight:400; }
+    details[open] .plus { transform:rotate(45deg); }
+    .detail { color:var(--muted); font-size:.92rem; padding:0 14px 13px; }
+    .compact details { border:1px solid var(--border); border-radius:8px; background:var(--surface); }
+    .compact details[open] { grid-column:1/-1; }
+    .compact summary:hover { background:var(--soft); border-radius:8px; }
+    .slim { column-gap:24px; row-gap:0; }
+    .slim details { border-bottom:1px solid var(--border); }
+    .slim details[open] { grid-column:1/-1; }
+    .slim summary { padding-left:0; padding-right:2px; min-height:45px; }
+    .slim .detail { padding-left:0; }
+    .projects { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+    .project { display:flex; flex-direction:column; min-height:190px; padding:20px 22px 15px; border:1px solid var(--border); border-radius:12px; }
+    .project h3 { font-size:1.1rem; }
+    .project p { margin:10px 0 16px; color:var(--muted); font-size:.94rem; }
+    .tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:auto; padding-bottom:14px; }
+    .tags span { color:var(--muted); border:1px solid var(--border); border-radius:999px; padding:2px 8px; font-size:.73rem; line-height:1.4; }
+    .project-link { display:flex; justify-content:space-between; gap:10px; padding-top:11px; border-top:1px solid var(--border); font-size:.88rem; }
+    @media(max-width:620px) { main { width:calc(100% - 32px); margin-top:24px; } .grid,.projects { grid-template-columns:1fr; } .compact details[open],.slim details[open] { grid-column:auto; } .project { min-height:0; } }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Design review: compact interests and project cards</h1>
+
+  <div class="review-label">A · Compact disclosure cards · Recommended</div>
+  <section aria-label="Compact research interests concept">
+    <h2>Research Interests</h2>
+    <p class="intro">How can AI systems explain their decisions and remain reliable with limited labels?</p>
+    <div class="grid compact">
+      <details><summary>AI Safety &amp; Interpretability <span class="plus" aria-hidden="true">+</span></summary><p class="detail">Examining why models make predictions, where they fail, and how to evaluate explanations.</p></details>
+      <details><summary>Large Language Models <span class="plus" aria-hidden="true">+</span></summary><p class="detail">A future interest in uncertainty and abstention, particularly in medical settings.</p></details>
+      <details><summary>Computer Vision <span class="plus" aria-hidden="true">+</span></summary><p class="detail">Robust visual representations and label-efficient learning for medical images.</p></details>
+      <details><summary>Vision-Language Models <span class="plus" aria-hidden="true">+</span></summary><p class="detail">A future interest in combining visual evidence and clinical language reliably.</p></details>
+    </div>
+    <a class="more" href="#projects-preview">Read more about my research →</a>
+  </section>
+
+  <div class="review-label">B · Divided rows · Most compact</div>
+  <section aria-label="Divided-row research interests concept">
+    <h2>Research Interests</h2>
+    <div class="grid slim">
+      <details><summary>AI Safety &amp; Interpretability <span class="plus" aria-hidden="true">+</span></summary><p class="detail">Examining why models make predictions, where they fail, and how to evaluate explanations.</p></details>
+      <details><summary>Large Language Models <span class="plus" aria-hidden="true">+</span></summary><p class="detail">A future interest in uncertainty and abstention, particularly in medical settings.</p></details>
+      <details><summary>Computer Vision <span class="plus" aria-hidden="true">+</span></summary><p class="detail">Robust visual representations and label-efficient learning for medical images.</p></details>
+      <details><summary>Vision-Language Models <span class="plus" aria-hidden="true">+</span></summary><p class="detail">A future interest in combining visual evidence and clinical language reliably.</p></details>
+    </div>
+    <a class="more" href="#projects-preview">Read more about my research →</a>
+  </section>
+
+  <div class="review-label" id="projects-preview">Projects · Two quiet cards</div>
+  <section aria-label="Project cards concept">
+    <h2>Projects</h2>
+    <p class="note">Built systems, separate from publications and research work.</p>
+    <div class="projects">
+      <article class="project">
+        <h3>CSE Academic Operations Hub</h3>
+        <p>A portal for scheduling, attendance, and faculty workload, with checks for teacher, room, and cohort conflicts.</p>
+        <div class="tags"><span>Scheduling</span><span>Conflict checks</span></div>
+        <a class="project-link" href="https://github.com/ForhanShahriarFahim/cse-academic-operations-hub" target="_blank" rel="noopener"><span>View on GitHub</span><span aria-hidden="true">↗</span></a>
+      </article>
+      <article class="project">
+        <h3>BookHive</h3>
+        <p>A book catalogue and stock-management application with search and filtering.</p>
+        <div class="tags"><span>Catalogue</span><span>Stock management</span></div>
+        <a class="project-link" href="https://github.com/ForhanShahriarFahim/BookHive" target="_blank" rel="noopener"><span>View on GitHub</span><span aria-hidden="true">↗</span></a>
+      </article>
+    </div>
+  </section>
+</main>
+</body>
+</html>

@@ -13,6 +13,15 @@ Read this before changing anything.
 - `DECISIONS.md` explains *why* the site is built this way, including what was
   tried and rejected. Read it before proposing something this file forbids.
 - `CONTENT-GUIDE.md` covers routine content edits in more detail.
+- `ONE-PAGE-ROADMAP.md` holds the condensed design, implementation history,
+  and next action. Read its Current task, R13, and Next task before continuing.
+
+The R11 mockup is historical visual guidance, not current site behaviour.
+R11a-e, R12a-c, and R13a-c are implemented and owner reviewed; release status
+and integrated checks are recorded in the roadmap.
+The owner subsequently grouped the three research sections under one Research
+nav link and changed Community to a direct News anchor. Begin at the roadmap's
+Next task when continuing; do not paste the mockup over the production page.
 
 ## Hard rules
 
@@ -42,10 +51,10 @@ Read this before changing anything.
 8. **Do not publish personal contact details beyond email.** No phone number, no
    home address, and no referees' email addresses on the site. Those stay in the
    PDF CV only.
-9. **The theme toggle is a sibling of `.site-nav__links`, not inside it.**
-   That is what lets the six links stay on one row at 390px while the toggle
-   shares row one with the name. Putting it back inside re-creates a three-row
-   header on phones.
+9. **The theme toggle is a sibling of `.site-nav__links` and
+   `.site-nav__menu`, not inside either.** On phones it shares the first row
+   with the name; the full section menu occupies the second row. On desktop
+   it sits to the right of the top navigation.
 10. **No em dashes anywhere.** Use a colon, semicolon, comma, parentheses, or a
    full stop instead. Strings of em-dash asides read as machine-written, which
    is the last impression this site should give. En dashes stay, but only for
@@ -58,27 +67,38 @@ Read this before changing anything.
 ## Tone and content
 
 - Understated and factual. No marketing language, no emoji, no exclamation
-  marks, no claims the CV does not support.
+  marks, no claims unsupported by the CV or an explicit owner statement.
 - British spelling is used throughout the prose.
-- Research framing: one question, making deep models legible and
-  label-efficient enough to trust in high-stakes settings, across three threads:
-  interpretability and AI safety, computer vision, and health/medical AI,
-  including an interest in medical language models. The published
+- Research framing: interest in what AI models learn, why they make certain
+  predictions, and where they fail, across four stated interests: AI safety and interpretability,
+  computer vision, large language models, and vision-language models. The
+  owner is seeking PhD opportunities beginning in Fall 2028. Language and
+  vision-language models are interests, not claims of completed work. The published
   vulnerability-detection papers belong under interpretability, because that is
   what they actually are (LIME, explainable multi-task transformers).
-- The updated PDF CV includes a research internship that the owner does not
-  want described in HTML yet. Do not add it to the site until asked. The YOLO
-  crop-disease project has ended and should not be presented as current work.
-- Web-development projects and competitive-programming ratings stay at the
-  bottom of `cv.html` only. They must not appear on the homepage or the research
-  page; leading with them signals "web developer" rather than "researcher".
+- The owner explicitly asked for the May–December 2025 AMIR Lab internship in
+  HTML, based on his account of work on the cancer-imaging review. The 29
+  September PDF omits AMIR and removes the ELITE entry from its earlier version.
+  The YOLO crop-disease project has ended and should not be presented as
+  current work.
+- The homepage Projects section contains selected built projects from the
+  updated CV and GitHub, not the EMG thesis, systematic review, or students'
+  supervised research. CSE Academic Operations Hub and BookHive are two concise
+  software records after the research sections.
+  Do not present them as PhD research. Competitive-programming ratings stay at
+  the bottom of `cv.html` only.
 
 ## Layout
 
 ```
-index.html            About, interests, news, selected publications
-research.html         Overview, three threads, recent and earlier work
-publications.html     Published and accepted work; ItemList JSON-LD in <head>
+index.html            One-page academic profile: About, research interests,
+                      full publications + ItemList JSON-LD, research work,
+                      education, awards, experience (including teaching and
+                      supervision), projects,
+                      News and Updates, Blog, contact
+research.html         Overview, four interests, recent and earlier work
+publications.html     Legacy publication URL bridge with old bookmark anchors;
+                      complete records live on the homepage
 teaching.html         Courses, supervision, mentoring
 blog.html           Index of posts
 blog/*.html        One file per post (root-absolute paths)
@@ -86,7 +106,8 @@ cv.html               Web CV; links to the PDF
 404.html              Not-found page (root-absolute paths)
 check.py              Consistency checker; also regenerates sitemap.xml
 assets/css/style.css  All styling. Numbered sections; tokens at the top
-assets/js/main.js     Theme, dates, news collapse, BibTeX copy, back-to-top
+assets/js/main.js     Theme, dates, recent-news expansion, back-to-top,
+                      homepage scroll tracking, legacy publication URL routing
 .github/workflows/    Check-then-deploy to GitHub Pages
 ```
 
@@ -98,16 +119,17 @@ Defined in `assets/css/style.css`. Prefer these over new CSS:
 |---|---|
 | `.entry` + `.entry__head/__title/__date/__sub` | A dated CV-style item |
 | `.timeline` wrapping `.entry` items | Vertical rail with a node per entry |
-| `.pub` + `.pub__title/__authors/__venue` | A publication record |
-| `.tag`, `.tag--muted` | Publication type and status chips above the title |
+| `.education-record`, `.awards-list` | Homepage degree timeline and separate awards |
+| `.research-interest-list` | Compact four-interest homepage line; detail stays on `research.html` |
+| `.role-list` + `.role` + `.role__details` | Separate Experience roles; Teaching and Supervision rows under Lecturer |
+| `.project-cards` + `.project-card` | Two whole-card GitHub links for undated software projects |
+| `.pub` + `.pub__date-status/__body/__title/__authors/__venue` | A publication row with year, status, and complete citation |
 | `.rows` + `.row` (`<dl>`) | Label-and-value pairs, e.g. skills |
-| `.news` | Dated news list on the homepage |
+| `.news-window` + `.news` | Fixed-height scroll region and dated news list on the homepage |
 | `.stages` + `.stage` + `.stage__mistake` | Numbered walkthrough in a note |
 | `.pitfall` | Warning callout in a note |
 | `.checklist` | Checklist with square markers |
-| `.callout` + `.btn` | Boxed row with an action, e.g. CV download |
-| `.pub__actions` | Row holding the DOI link and the BibTeX disclosure |
-| `.news-toggle` | Injected by main.js past 6 news items; do not hand-write |
+| `.callout` + `.btn` | Boxed row with an action, e.g. PDF CV view |
 | `.to-top` | Back-to-top button, injected by main.js on every page |
 
 ## Behaviour that lives in main.js, not markup
@@ -116,13 +138,10 @@ These are injected at runtime so no page carries duplicate HTML, and so readers
 without scripting are never shown a control that could not work:
 
 - the back-to-top button,
-- the copy button on each BibTeX panel,
-- the "show earlier updates" toggle, which appears only once the news list on
-  `index.html` grows past six items. Just keep adding `<li>` entries in
-  chronological order; nothing needs pruning. A nested scrollbox was considered
-  and rejected: it traps touch scrolling on phones, hides items below its own
-  fold, clips when printed, and needs `tabindex` plus a label to be reachable by
-  keyboard,
+- the homepage scroll-progress line and current-section navigation state,
+- Blog preview scrolling starts only after three homepage post entries; the
+  archive link goes to `blog.html`. The News list is always scrollable in HTML
+  and CSS, including without JavaScript; print expands it,
 - the footer year and the "Last updated" date, which reads the page's own
   `Last-Modified` header.
 
@@ -135,8 +154,10 @@ python -m http.server 4173       # local preview
 ```
 
 Check both themes and at least 375px, 780px, and 1100px widths after any layout
-change. The navigation collapses to two rows below 780px and must never wrap its
-link row.
+change. At 1120px and above the top bar shows direct academic links and a
+direct Community link to News and Updates; below that the full section map is
+in a Sections disclosure. At 780px and below the name/toggle and menu
+occupy separate rows. Keep every menu link reachable without JavaScript.
 
 ## Deploying
 
@@ -151,7 +172,7 @@ Do not invent credentials. Current, verified values:
 - Lecturer, Dept. of CSE, Pundra University of Science & Technology (Mar 2025–)
 - B.Sc. CSE, University of Rajshahi, 2019–2024, CGPA 3.66
 - Three published papers and one accepted conference paper, all 2026. See
-  `publications.html` for exact records and status
+  `index.html` for canonical visible records and status
 - Email `forhan.shahriar.fahim@gmail.com` · ORCID `0009-0006-8705-4598`
 - Scholar `jkZQkCYAAAAJ` · GitHub & LinkedIn `ForhanShahriarFahim` /
   `forhanshahriarfahim`

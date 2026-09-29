@@ -1,143 +1,167 @@
 # Project context
 
-Last reviewed against the repository: 23 September 2026.
+Last reviewed against the repository: 29 September 2026.
 
-Read this file at the start of work in this repository, then read `AGENTS.md` for
-the binding rules. This is an orientation map, not a substitute for the current
-source files. Re-read the relevant page or asset before editing it. If a durable
-fact, page, workflow, or design decision changes, update this file in the same
-change. Do not treat the review date or a page's fallback "Last updated" text
-as proof that a real-world fact is still current.
+Read this with `AGENTS.md` at the start of a task. This file describes the
+current local site; `ONE-PAGE-ROADMAP.md` holds the staged history and status.
+Check the source file before changing or repeating an exact claim.
 
-## Purpose and audience
+## Purpose and current state
 
-This is the personal academic website of Md. Forhan Shahriar Fahim, at
-<https://forhanshahriarfahim.github.io/>. It supports applications to US AI PhD
-programmes for Fall 2027. Faculty and admissions committees are the main
-audience. The presentation should be quiet, factual, fast, and recognisably a
-researcher's page.
+This is Md. Forhan Shahriar Fahim's academic site for US AI PhD applications
+beginning in Fall 2028. Faculty and admissions committees should be able to
+read the research profile, all paper records, education, teaching, and contact
+on one scrollable homepage. The design is quiet, factual, fast, and static.
+R10a-e, R11a-e, R12a-c, and R13a-c are implemented locally and owner reviewed.
+Integrated checks are recorded in `ONE-PAGE-ROADMAP.md`. The owner approved
+publication on 29 September 2026; deployment verification is the current task.
+The owner has approved the **R11 target design**. R11a Education and Awards and
+R11b top navigation, R11c About and Research Interests, R11d Experience
+and Projects, and R11e Community and News are complete locally. R12a-c add
+grouped Research navigation, two school scholarships, a research return link,
+whole-card GitHub actions, and compact labelled hero links. R12d is the
+integrated review. R13 adds the owner-reviewed Experience and Contact layouts,
+equal-weight profile links, contextual returns, and the exact supplied CV.
+The reviewed R11 mockup is
+`planning/top-nav-community-news-mockup.html`; the ordered tasks and checks
+are in the R11 section of `ONE-PAGE-ROADMAP.md`. The owner's later Community
+correction replaces the mockup's dropdown with a direct News anchor.
+Do not mistake the mockup for the deployed or local site.
 
-The research narrative asks how to make deep models legible and label-efficient
-enough to trust where mistakes are costly. Its three threads are AI safety and
-interpretability, computer vision, and health and medical AI. Large language
-models are a research interest within the first and third threads. The three
-published 2026 vulnerability-detection papers belong to interpretability: they
-use LIME, explainable multi-task transformers, and CWE categorisation. The
-accepted patch-generation paper is related software-security work, with a
-different research claim. Preserve these distinctions when editing the site.
+The About text and Fall 2028 timing on `index.html` were supplied by the
+owner after the original R10 plan. Do not substitute the older proposed
+Fall 2027 paragraph. The hero question is: "I want to understand what AI
+models learn, why they make certain predictions, and where they fail."
+For R11, the owner supplied a further revised About paragraph. Its exact
+one-paragraph copy and emphasis are in the R11 target rules of
+`ONE-PAGE-ROADMAP.md` and now on `index.html`.
 
-## Current site content
+## Verified facts and content boundaries
 
-These statements describe what the repository currently publishes. Check the
-named source before changing or repeating an exact record.
+- Lecturer, Department of Computer Science & Engineering, Pundra University
+  of Science & Technology, since March 2025.
+- B.Sc. CSE, University of Rajshahi, January 2019 to December 2024.
+  CGPA 3.66/4.00; last two years average 3.82/4.00. The undergraduate
+  force-invariant surface-EMG thesis belongs to Education and the research
+  detail page, never homepage Projects.
+- The R11 homepage Selected coursework line is owner-provided: Artificial
+  Intelligence, Digital Image Processing, Algorithms, Data Structure,
+  Database, Operating System, Computer Networks, and Cryptography and Network
+  Security. “Computer Networks” was confirmed by the owner. This supersedes
+  the previous five-course proposal; do not claim all eight are PDF-verified.
+  Match its font size to the Undergraduate thesis line in the R11 design.
+- Three published 2026 papers and one accepted 2026 conference paper. The
+  accepted VulPatchNet paper has no verified DOI or public paper URL. Complete
+  visible records and ItemList JSON-LD are on `index.html`; the old
+  `publications.html` URL is a bookmark bridge.
+- There is no arXiv preprint now. A future preprint belongs in Publications
+  with its status explicit; Research Work may describe its underlying study
+  when that adds distinct context.
+- The PRISMA-guided systematic review of self-supervised learning in cancer
+  imaging ran August 2025 to September 2026. It is complete; its manuscript
+  is in preparation, not published.
+- The owner confirmed a Research Intern role at AMIR Lab (Advanced Machine
+  Intelligence Research Lab), May 2025 to December 2025. During it he screened
+  and analysed studies for the cancer-imaging review and drafted manuscript
+  sections and figures. This owner-supplied role is absent from the current PDF.
+- Four interests: AI safety and interpretability, computer vision, large
+  language models, and vision-language models. The last two are future
+  research interests, not claims of completed work. The three published
+  vulnerability-detection papers are interpretability work; the accepted
+  patch-generation paper has a different claim.
+- Homepage Projects contains two CV-backed built systems in GitHub cards:
+  CSE Academic Operations Hub and BookHive, linked to their public repositories.
+  Do not imply the Hub was officially deployed. Undergraduate medical-imaging
+  student projects are under Teaching & Supervision, not Projects.
+- Awards includes the 2025 faculty award, 2023 Dean's Award, and two
+  owner-supplied Dinajpur Education Board scholarships. The 2016 SSC General
+  Scholarship and 2014 JSC Talentpool Scholarship use examination years,
+  which need not equal announcement dates. Individual result certificates
+  have not been supplied.
+- The owner's supplied two-page PDF CV is at
+  `assets/cv/Md_Forhan_Shahriar_Fahim_CV.pdf`. The site opens it in a new
+  tab via a stable same-site URL. Its bytes match the owner's Downloads file.
+  The owner's 29 September replacement removes the ELITE Research Lab entry.
+  It still omits AMIR, which the owner separately supplied and approved for
+  HTML. Fuller contact details remain PDF-only. Do not add phone, address, or
+  referees' details to HTML unless explicitly asked.
+- Teaching, current and previous courses, awards, and public profile links
+  should be checked in `index.html`, `teaching.html`, and `cv.html` before
+  changing exact wording. Web-development and competitive-programming details
+  remain low on `cv.html`; the two selected Projects are an owner-approved
+  exception for the homepage.
 
-- **Appointment:** Lecturer, Department of Computer Science & Engineering,
-  Pundra University of Science & Technology, since March 2025.
-- **Education:** B.Sc. in Computer Science & Engineering, University of
-  Rajshahi, 2019 to 2024, CGPA 3.66/4.00. Undergraduate thesis on
-  force-invariant surface EMG pattern recognition with a hybrid CNN–LSTM model.
-- **Publications:** Three published papers, all dated 2026: a journal paper on
-  explainable multi-task transformers for cross-language source-code
-  vulnerability detection, a QPAIN paper on CWE-categorised Android
-  vulnerabilities, and an ICECTE paper on transformer models with LIME for
-  JavaScript vulnerability detection. A fourth paper, VulPatchNet, is accepted
-  at RAAICON 2026; it is not yet presented as published and has no DOI on the
-  site. `publications.html` is canonical for exact records and status. The
-  homepage and web CV repeat summaries and must stay consistent.
-- **Research status:** A PRISMA-guided review of self-supervised learning for
-  label-efficient cancer imaging (MRI, CT, and histopathology) ran from August
-  2025 to September 2026. Its manuscript remains in preparation. The former
-  YOLO crop-disease project is no longer pursued and has been removed.
-- **Teaching and supervision:** Current courses are Design and Analysis of
-  Algorithms and Machine Learning; previous courses include Web Engineering,
-  Structured Programming, and Simulation and Modelling. More than ten
-  undergraduate research students are supervised. Check `teaching.html` and
-  `cv.html` for precise descriptions.
-- **Blog:** One post, "The Machine Learning Pipeline, and Where It Usually
-  Breaks", dated 28 August 2026. `blog.html` is the index.
-- **Public contact and profiles:** Email
-  `forhan.shahriar.fahim@gmail.com`; ORCID `0009-0006-8705-4598`; Google
-  Scholar user `jkZQkCYAAAAJ`; GitHub `ForhanShahriarFahim`; LinkedIn
-  `forhanshahriarfahim`. Do not add a phone number, home address, or referees'
-  contact details to the site. The PDF CV has fuller contact information.
+## Current architecture
 
-The current PDF CV includes an internship that the owner has chosen to add to
-the HTML site later. Do not surface it in HTML until explicitly requested. The
-web CV is a curated academic page, not a complete transcription of the PDF.
+Plain HTML, one CSS file, one small vanilla JavaScript file. No build step,
+dependencies, framework, or CDN code. Google Fonts is the only external page
+request and has local fallbacks.
 
-## Where to find the source of truth
+The homepage section order is About, Research Interests, Publications,
+Research Work, Education, Awards & Recognition, Experience, Projects,
+News and Updates, Blog, Contact. The sticky top bar links directly to
+Research (`#research`), Education, Awards, Experience, and Projects. Research
+stays active through Publications and Research Work. Community is a direct
+`#updates` link without a dropdown, and
+its active state continues through Blog and Contact. Below 1120px, a Sections disclosure exposes the same
+destinations. On phones its row sits below the name and theme toggle. About
+stays on the page without a nav link. Experience has separate Lecturer and
+AMIR Lab Research Intern roles; Teaching and Supervision remain concise rows
+under Lecturer. There is no separate homepage
+Teaching section. All eleven section IDs remain addressable, and old
+`#teaching`, `#interests`, `#news`, `#background`,
+`#academic-work`, and `#news-blog` bookmarks still resolve. JS highlights the
+current nav group or section and shows page progress; ordinary
+scrolling and native anchors work without JS.
 
-| Need | Read |
+The homepage Research Interests section now shows four names on one editorial
+line at tablet/desktop widths and wraps on phones. It has no introduction or
+expansion controls; `research.html` retains the longer explanations.
+Projects follows Experience as two undated, whole-card GitHub links; the EMG
+thesis stays in Education. The fuller course and supervision records remain on
+`teaching.html`. The six hero actions keep visible labels and fit on one row at
+1100px and wider, wrapping naturally below that. Their order is Email, CV,
+Google Scholar, ORCID, GitHub, LinkedIn, with icons and equal label weight.
+Contact is a compact email and public-profile strip. `research.html` has a
+fixed return link to Research Interests; `teaching.html` returns to Experience
+and the Blog post returns to the homepage Blog section.
+
+News keeps all six current entries in a fixed-height, keyboard-focusable and
+touch-scrollable list. There is no view-all control. All entries remain in
+HTML without JS, and print expands the region. Blog currently has one post, no scrollbar,
+and a "View all posts" link to `blog.html`. Once more than three homepage
+post previews exist, JS makes the preview scrollable.
+
+Shared navigation and footer are duplicated intentionally across all HTML
+pages. Root pages use relative paths; `blog/` and `404.html` use root-absolute
+paths. `check.py` validates markup parity, links, anchor map, publication
+bridge, metadata, JSON-LD, sitemap, and text integrity. Run it after every
+change.
+
+## Source map and handoff
+
+| Need | Source |
 |---|---|
-| Binding agent rules and verification | `AGENTS.md` |
-| Why a design or content choice was made | `DECISIONS.md` |
-| How to add news, publications, posts, or routine CV content | `CONTENT-GUIDE.md` |
-| Bio, current application wording, news, selected papers | `index.html` |
-| Research framing, threads, and project status | `research.html` |
-| Exact paper records and structured data | `publications.html` |
-| Teaching and supervision | `teaching.html` |
-| Web CV and PDF link | `cv.html` and `assets/cv/` |
-| Blog index and post content | `blog.html` and `blog/` |
-| Colours, typography, spacing, responsive and print rules | `assets/css/style.css` |
-| Theme, date, news, BibTeX, and back-to-top behaviour | `assets/js/main.js` |
-| Validation and sitemap logic | `check.py` |
-| Deployment gate | `.github/workflows/deploy.yml` |
+| Binding rules | `AGENTS.md` |
+| Active status, staged history, next task | `ONE-PAGE-ROADMAP.md` |
+| Design rationale and superseded choices | `DECISIONS.md` |
+| Routine content editing | `CONTENT-GUIDE.md` |
+| Current homepage and publication records | `index.html` |
+| Research detail | `research.html` |
+| Teaching detail | `teaching.html` |
+| Web CV and current PDF | `cv.html`, `assets/cv/` |
+| Blog index and post | `blog.html`, `blog/` |
+| Style and behaviour | `assets/css/style.css`, `assets/js/main.js` |
+| Validation and deployment | `check.py`, `.github/workflows/deploy.yml` |
 
-`404.html` is the not-found page. `sitemap.xml` lists indexable HTML pages.
-`_source/` contains local originals, is ignored by Git, and must not be used as
-the public site's source of truth.
+For Claude or another agent, read `AGENTS.md`, this file, and the roadmap's
+Current task/R11/Next action first. Read `DECISIONS.md` when considering a
+design reversal and `CONTENT-GUIDE.md` for a routine edit. `CLAUDE.md` and
+`GEMINI.md` are pointers, not parallel sources of facts. Begin with R12d;
+do not repeat the earlier R10 implementation.
 
-## Architecture and working rules
-
-- Static HTML, a single CSS file, and one small vanilla JavaScript file. There
-  is no build step, package manager, framework, or CDN script or stylesheet.
-  Google Fonts is the only external page request and has local fallback stacks.
-- Navigation and footer markup is deliberately duplicated on every HTML page
-  for no-JavaScript rendering and search indexing. Edit every copy together.
-  Blog posts and `404.html` use root-absolute asset and navigation paths.
-- The light, system-dark, and manually selected dark palettes must all remain
-  coherent. Keep text contrast at 4.5:1 or better. Persist a theme preference
-  only after an explicit click.
-- JavaScript injects the back-to-top control, BibTeX copy buttons, and the
-  earlier-news toggle after six items. It also updates the footer year and
-  "Last updated" date from the page's `Last-Modified` header.
-- Use British spelling, understated claims, and no em dashes. Web-development
-  projects and competitive-programming ratings belong at the bottom of
-  `cv.html`, not on the homepage or research page.
-- Run `python check.py` after every change. It checks links, anchors, shared
-  markup, metadata, publication title sync, sitemap coverage, and text asset
-  integrity. After adding or removing a page, run
-  `python check.py --write-sitemap`, then check again. Preview with
-  `python -m http.server 4173`. Review layout changes in both themes at phone,
-  tablet, and desktop widths, including 375px, 780px, and 1100px.
-- Push to `main` to deploy through GitHub Actions. The workflow runs the
-  checker before publishing to GitHub Pages. Pages must use GitHub Actions as
-  its source.
-
-## Settled choices and open items
-
-`DECISIONS.md` records the full history. In particular, do not reintroduce a
-build system, a scrollable news box, JavaScript-injected navigation, or the
-reverted narrow prose measure. The owner prefers the fuller text column. The
-section label is **Blog**, chosen after considering Notes and Writing.
-
-The portrait and possible font change are open taste decisions. Per-paper PDF
-or arXiv links need actual preprint URLs. Do not infer that an open item is
-authorised for implementation merely because it is mentioned here.
-
-## Keeping this context current
-
-1. At the start of a task, read this file and `AGENTS.md`, then the relevant
-   source files. For a design change, also read `DECISIONS.md`; for routine
-   content work, read `CONTENT-GUIDE.md`.
-2. When content changes, update its canonical HTML source and any repeated
-   summaries first. When the change alters a durable fact or project state,
-   update the matching summary above and the review date. Record new rationale
-   in `DECISIONS.md` when a settled choice changes.
-3. Run the checker after the complete change and resolve failures. Keep
-   `CONTEXT.md`, `AGENTS.md`, and assistant entry files as short pointers where
-   possible, so facts do not drift between instruction files.
-
-No repository file can force an arbitrary LLM client to read local files.
-Assistant integrations that recognise repository instruction files are directed
-here; for other clients, supply `AGENTS.md` and `CONTEXT.md` with the task.
+The local preview is `http://localhost:4177/` while its server is running.
+After any edit, run the bundled Python executable or `python check.py`.
+Before publishing, inspect both themes, 375/780/1100px widths, navigation,
+news scrolling, blog link, PDF, no-JS content, print, and the browser console.
+Publishing uses GitHub Actions on a push to `main`; this task has not pushed.

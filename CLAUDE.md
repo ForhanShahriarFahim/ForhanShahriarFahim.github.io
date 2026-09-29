@@ -8,6 +8,11 @@ on this repository. This file points to the shared guidance.
 at the start of every task, then inspect the relevant source files. Update it
 when a durable fact, page, workflow, or project status changes.
 
+[ONE-PAGE-ROADMAP.md](ONE-PAGE-ROADMAP.md) is the active redesign handoff. Read
+its **Current task**, **R13**, and **Next task** sections before working on the
+site. R10–R13 changes are implemented locally; verify progress against the log
+and the actual HTML/PDF before changing files.
+
 Routine content edits (adding a publication, a news item, a note) are documented
 in [CONTENT-GUIDE.md](CONTENT-GUIDE.md).
 
