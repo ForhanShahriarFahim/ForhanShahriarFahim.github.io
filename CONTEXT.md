@@ -12,9 +12,10 @@ This is Md. Forhan Shahriar Fahim's academic site for US AI PhD applications
 beginning in Fall 2028. Faculty and admissions committees should be able to
 read the research profile, all paper records, education, teaching, and contact
 on one scrollable homepage. The design is quiet, factual, fast, and static.
-R10a-e, R11a-e, R12a-c, and R13a-c are implemented locally and owner reviewed.
-Integrated checks are recorded in `ONE-PAGE-ROADMAP.md`. The owner approved
-publication on 29 September 2026; deployment verification is the current task.
+R10a-e, R11a-e, R12a-c, and R13a-c are implemented, owner reviewed, and
+published on GitHub Pages. Integrated checks and release verification are
+recorded in `ONE-PAGE-ROADMAP.md`. The owner approved publication on
+29 September 2026.
 The owner has approved the **R11 target design**. R11a Education and Awards and
 R11b top navigation, R11c About and Research Interests, R11d Experience
 and Projects, and R11e Community and News are complete locally. R12a-c add

@@ -1,8 +1,8 @@
 # One-page academic website roadmap
 
-**Status:** R10a-e, R11a-e, R12a-c, and R13a-c implemented locally. R12d and R13d reviewed. Release authorised; deployment verification pending.
+**Status:** R10a-e, R11a-e, R12a-c, and R13a-c implemented and published. R12d and R13d reviewed. GitHub Pages release verified on 29 September 2026.
 **Last reviewed:** 29 September 2026.
-**Current task:** Replace the site PDF with the owner's 29 September file, run release checks, push `main`, and verify GitHub Pages.
+**Current task:** Owner review of the published site and CV. Apply specific corrections as new tasks.
 **Audience:** Faculty and admissions committees reviewing Fall 2028 PhD applications.
 
 This is the handoff and progress record for the redesign. Start with `AGENTS.md`
@@ -608,6 +608,15 @@ site PDF hash matches the new Downloads file; inspect the PDF and release diff;
 then commit and push `main`. Verify the GitHub Actions deploy and the live
 homepage and CV URL. Record the deployed commit and remaining issues here.
 
+**Release verification, 29 September 2026:** Commit `0764bc4` was pushed to
+`main`. GitHub Actions run `36523267175` passed the consistency check and
+Pages deployment. The public homepage returned HTTP 200 with the AMIR role and
+Research Interests. The public CV returned HTTP 200 as `application/pdf`,
+184,919 bytes, SHA-256
+`f662a07588f12554b75664a3ae71fa708f84876af4c90b95b47e8c2d2cead652`,
+matching the supplied 29 September replacement. Both pages rendered legibly
+before publication. This handoff-status update follows the verified release.
+
 **R13 validation, 29 September 2026:** `check.py`, JavaScript syntax, and
 `git diff --check` pass. Browser checks at 375, 780, 1100, and 1280px in
 both themes found no horizontal overflow or page errors. The six hero links
@@ -623,7 +632,6 @@ with `application/pdf` from the stable site URL. Screenshots:
 `planning/R13-experience-375-dark.png`, `planning/R13-contact-1280-light.png`,
 `planning/R13-contact-375-dark.png`, and `planning/R13-hero-1280-light.png`.
 
-**Next task:** Complete the authorised release: commit, push `main`, verify
-the GitHub Actions deployment and live homepage/CV, then record the published
-commit. There is no arXiv record to add now; follow the R12 preprint rule if
-one becomes available.
+**Next task:** Review the public homepage and CV. Record any specific content
+or layout corrections before another implementation pass. There is no arXiv
+record to add now; follow the R12 preprint rule if one becomes available.
