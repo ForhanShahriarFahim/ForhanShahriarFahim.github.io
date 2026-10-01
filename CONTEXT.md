@@ -1,6 +1,6 @@
 # Project context
 
-Last reviewed against the repository: 29 September 2026.
+Last reviewed against the repository: 1 October 2026.
 
 Read this with `AGENTS.md` at the start of a task. This file describes the
 current local site; `ONE-PAGE-ROADMAP.md` holds the staged history and status.
@@ -42,9 +42,10 @@ one-paragraph copy and emphasis are in the R11 target rules of
 - Lecturer, Department of Computer Science & Engineering, Pundra University
   of Science & Technology, since March 2025.
 - B.Sc. CSE, University of Rajshahi, January 2019 to December 2024.
-  CGPA 3.66/4.00; last two years average 3.82/4.00. The undergraduate
-  force-invariant surface-EMG thesis belongs to Education and the research
-  detail page, never homepage Projects.
+  CGPA 3.66/4.00; the owner-corrected last two years average is 3.79/4.00,
+  displayed as 3.8/4.0 on the HTML pages and in the latest supplied PDF.
+  The undergraduate force-invariant surface-EMG thesis belongs to Education
+  and the research detail page, never homepage Projects.
 - The R11 homepage Selected coursework line is owner-provided: Artificial
   Intelligence, Digital Image Processing, Algorithms, Data Structure,
   Database, Operating System, Computer Networks, and Cryptography and Network
@@ -79,12 +80,12 @@ one-paragraph copy and emphasis are in the R11 target rules of
   Scholarship and 2014 JSC Talentpool Scholarship use examination years,
   which need not equal announcement dates. Individual result certificates
   have not been supplied.
-- The owner's supplied two-page PDF CV is at
+- The owner's latest supplied two-page PDF CV, received 1 October 2026, is at
   `assets/cv/Md_Forhan_Shahriar_Fahim_CV.pdf`. The site opens it in a new
   tab via a stable same-site URL. Its bytes match the owner's Downloads file.
-  The owner's 29 September replacement removes the ELITE Research Lab entry.
-  It still omits AMIR, which the owner separately supplied and approved for
-  HTML. Fuller contact details remain PDF-only. Do not add phone, address, or
+  It includes the AMIR Lab internship and displays the corrected rounded
+  last-two-years average of 3.8. The earlier 29 September PDF omitted AMIR.
+  Fuller contact details remain PDF-only. Do not add phone, address, or
   referees' details to HTML unless explicitly asked.
 - Teaching, current and previous courses, awards, and public profile links
   should be checked in `index.html`, `teaching.html`, and `cv.html` before

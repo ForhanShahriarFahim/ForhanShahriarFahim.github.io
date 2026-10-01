@@ -635,3 +635,11 @@ with `application/pdf` from the stable site URL. Screenshots:
 **Next task:** Review the public homepage and CV. Record any specific content
 or layout corrections before another implementation pass. There is no arXiv
 record to add now; follow the R12 preprint rule if one becomes available.
+
+**1 October 2026 correction and CV replacement:** The owner corrected the
+exact last-two-years average to 3.79/4.00 and chose 3.8/4.0 for the website.
+The homepage and web CV now show that rounded value. The owner supplied a new
+two-page PDF CV with 3.8 and the AMIR Lab internship; it replaced the previous
+file at the same site path. Earlier 3.82 references above record the historical
+source and review, not the current academic fact. The replacement and HTML
+changes are local pending publication.
