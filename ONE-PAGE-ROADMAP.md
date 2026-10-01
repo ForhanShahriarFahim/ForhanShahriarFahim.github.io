@@ -642,4 +642,4 @@ The homepage and web CV now show that rounded value. The owner supplied a new
 two-page PDF CV with 3.8 and the AMIR Lab internship; it replaced the previous
 file at the same site path. Earlier 3.82 references above record the historical
 source and review, not the current academic fact. The replacement and HTML
-changes are local pending publication.
+changes were pushed to `main` in commit `3a53856` on 1 October 2026.
