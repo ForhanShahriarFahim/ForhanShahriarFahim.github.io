@@ -643,3 +643,9 @@ two-page PDF CV with 3.8 and the AMIR Lab internship; it replaced the previous
 file at the same site path. Earlier 3.82 references above record the historical
 source and review, not the current academic fact. The replacement and HTML
 changes were pushed to `main` in commit `3a53856` on 1 October 2026.
+
+**2 October 2026 display and CV update:** The owner requested 3.80 in place
+of 3.8 and supplied `Md_Forhan_Shahriar_Fahim_CV_PHD_01_10_26_.pdf`.
+The homepage and web CV display 3.80/4.00, and the supplied two-page PDF
+replaces the previous asset at its stable URL. The exact owner-confirmed
+average remains 3.79/4.00; 3.80 is the chosen display of the rounded value.

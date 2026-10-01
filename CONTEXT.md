@@ -1,6 +1,6 @@
 # Project context
 
-Last reviewed against the repository: 1 October 2026.
+Last reviewed against the repository: 2 October 2026.
 
 Read this with `AGENTS.md` at the start of a task. This file describes the
 current local site; `ONE-PAGE-ROADMAP.md` holds the staged history and status.
@@ -43,7 +43,9 @@ one-paragraph copy and emphasis are in the R11 target rules of
   of Science & Technology, since March 2025.
 - B.Sc. CSE, University of Rajshahi, January 2019 to December 2024.
   CGPA 3.66/4.00; the owner-corrected last two years average is 3.79/4.00,
-  displayed as 3.8/4.0 on the HTML pages and in the latest supplied PDF.
+  displayed as 3.80/4.00 on the HTML pages at the owner's request on 2 October.
+  The latest supplied PDF also displays 3.80. This is the owner's chosen
+  formatting of the one-decimal rounded value; the exact average remains 3.79.
   The undergraduate force-invariant surface-EMG thesis belongs to Education
   and the research detail page, never homepage Projects.
 - The R11 homepage Selected coursework line is owner-provided: Artificial
@@ -65,7 +67,7 @@ one-paragraph copy and emphasis are in the R11 target rules of
 - The owner confirmed a Research Intern role at AMIR Lab (Advanced Machine
   Intelligence Research Lab), May 2025 to December 2025. During it he screened
   and analysed studies for the cancer-imaging review and drafted manuscript
-  sections and figures. This owner-supplied role is absent from the current PDF.
+  sections and figures. This owner-supplied role is included in the current PDF.
 - Four interests: AI safety and interpretability, computer vision, large
   language models, and vision-language models. The last two are future
   research interests, not claims of completed work. The three published
@@ -80,11 +82,13 @@ one-paragraph copy and emphasis are in the R11 target rules of
   Scholarship and 2014 JSC Talentpool Scholarship use examination years,
   which need not equal announcement dates. Individual result certificates
   have not been supplied.
-- The owner's latest supplied two-page PDF CV, received 1 October 2026, is at
+- The owner's latest supplied two-page PDF CV, received 2 October 2026, is at
   `assets/cv/Md_Forhan_Shahriar_Fahim_CV.pdf`. The site opens it in a new
   tab via a stable same-site URL. Its bytes match the owner's Downloads file.
   It includes the AMIR Lab internship and displays the corrected rounded
-  last-two-years average of 3.8. The earlier 29 September PDF omitted AMIR.
+  last-two-years average as 3.80. The source file is
+  `Downloads/Md_Forhan_Shahriar_Fahim_CV_PHD_01_10_26_.pdf`.
+  The earlier 29 September PDF omitted AMIR.
   Fuller contact details remain PDF-only. Do not add phone, address, or
   referees' details to HTML unless explicitly asked.
 - Teaching, current and previous courses, awards, and public profile links
